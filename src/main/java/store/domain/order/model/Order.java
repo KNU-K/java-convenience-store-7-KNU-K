@@ -25,9 +25,6 @@ public final class Order {
         orderItems.forEach(action);
     }
 
-    public List<OrderItem> orderItems() {
-        return orderItems;
-    }
 
     public Price totalPrice() {
         return totalPrice;

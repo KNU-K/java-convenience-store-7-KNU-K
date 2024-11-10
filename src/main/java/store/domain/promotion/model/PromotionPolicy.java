@@ -56,16 +56,8 @@ public class PromotionPolicy {
             throw new InvalidPromotionException(ErrorMessages.NEGATIVE_QUANTITY);
         }
     }
-
-    public int getApplicableQuantityIncludedGift(int quantity) {
-        return getGiftQuantity(quantity) * getTotalQuantityRequiredForPromotion();
-    }
-
     public int getApplicableQuantity(int limitedQuantity) {
         return getGiftQuantity(limitedQuantity) * getTotalQuantityRequiredForPromotion();
     }
 
-    public int getApplicableQuantityOfGift(int quantity) {
-        return quantity / getTotalQuantityRequiredForPromotion();
-    }
 }

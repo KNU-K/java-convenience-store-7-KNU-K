@@ -64,9 +64,6 @@ public class InventoryService {
         int totalQuantity = getStock(productName)
                 .map(Stock::getQuantity)
                 .orElse(0) + getPromotionStockQuantity(productName);
-        System.out.println(requiredQuantity);
-        System.out.println(totalQuantity);
-        System.out.println(totalQuantity < requiredQuantity);
         if (totalQuantity < requiredQuantity) {
             throw new InvalidInventoryException(ErrorMessages.EXCEEDS_STOCK);
         }

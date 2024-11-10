@@ -27,8 +27,7 @@ public class Price {
     }
 
     public Price applyPercentage(int percentage) {
-        Price a = Price.of((int) (amount * (percentage / 100.0)));
-        return a;
+        return Price.of((int) (amount * (percentage / 100.0)));
     }
 
     public Price plus(Price other) {

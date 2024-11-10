@@ -21,6 +21,7 @@ public class InputView {
 
     public Cart getProductNameAndQuantity() {
         return inputRetryHandler.execute(() -> {
+            System.out.println(System.lineSeparator());
             System.out.println(PROMPT_PRODUCT_QUANTITY);
             String input = Console.readLine();
             return CartFactory.createCartFromInput(input);
@@ -44,6 +45,7 @@ public class InputView {
     }
 
     private String getYesOrNo(String question) {
+        System.out.println(System.lineSeparator());
         System.out.println(question);
         String input = Console.readLine();
         if (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {

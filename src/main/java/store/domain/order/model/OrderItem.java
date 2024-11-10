@@ -81,9 +81,6 @@ public final class OrderItem {
         quantity -= remainingQuantity;
     }
 
-    public void resetPromotionQuantity() {
-        promotionQuantity = 0;
-    }
 
     public void updatePromotionQuantity(int applicableQuantity) {
         promotionQuantity = applicableQuantity;
