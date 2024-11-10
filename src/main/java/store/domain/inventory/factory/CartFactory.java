@@ -20,7 +20,7 @@ public class CartFactory {
     private static final String DATA_SEPARATOR = "-";
 
     public static Cart createCartFromInput(String input) {
-
+        validateInputFormat(input);
         Cart cart = new Cart();
         String[] itemGroups = cleanAndSplitInput(input);
 
