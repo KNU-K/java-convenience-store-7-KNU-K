@@ -1,5 +1,6 @@
 package store.common.handler;
 
+import store.common.view.OutputView;
 import store.domain.inventory.controller.InventoryController;
 import store.domain.inventory.model.Cart;
 import store.domain.order.controller.OrderController;
@@ -12,13 +13,16 @@ public class ConvenienceStoreManager {
     private final Supplier<InventoryController> shoppingControllerSupplier;
     private final Supplier<OrderController> orderControllerSupplier;
     private final Supplier<PaymentController> paymentControllerSupplier;
+    private final OutputView outputView;
 
     public ConvenienceStoreManager(Supplier<InventoryController> shoppingControllerSupplier,
                                    Supplier<OrderController> orderControllerSupplier,
-                                   Supplier<PaymentController> paymentControllerSupplier) {
+                                   Supplier<PaymentController> paymentControllerSupplier,
+                                   OutputView outputView) {
         this.shoppingControllerSupplier = shoppingControllerSupplier;
         this.orderControllerSupplier = orderControllerSupplier;
         this.paymentControllerSupplier = paymentControllerSupplier;
+        this.outputView = outputView;
     }
 
     public void handleOrderProcess() {
@@ -32,7 +36,7 @@ public class ConvenienceStoreManager {
                 paymentController.doPayment(order);
 
             } catch (IllegalArgumentException error) {
-                System.out.println(error.getMessage());
+                outputView.displayMessage(error.getMessage());
             } finally {
                 if (!paymentController.askForAdditionalPurchaseAfterPayment()) {
                     return;

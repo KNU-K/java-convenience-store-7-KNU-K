@@ -27,7 +27,7 @@ public class SupplierConfig {
         Supplier<OrderController> orderControllerSupplier = () -> new OrderController(createInputView(), createOutputView(), storeInitializer.getOrderService(createOrderControllerCallback()));
         Supplier<PaymentController> paymentControllerSupplier = () -> new PaymentController(createInputView(), createOutputView(), storeInitializer.getPaymentService(), storeInitializer.getShoppingService());
 
-        this.convenienceStoreManager = new ConvenienceStoreManager(shoppingControllerSupplier, orderControllerSupplier, paymentControllerSupplier);
+        this.convenienceStoreManager = new ConvenienceStoreManager(shoppingControllerSupplier, orderControllerSupplier, paymentControllerSupplier, createOutputView());
 
         dataInitializer.initializeData();
     }
