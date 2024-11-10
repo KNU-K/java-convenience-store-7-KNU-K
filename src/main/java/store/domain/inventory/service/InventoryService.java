@@ -23,8 +23,10 @@ public class InventoryService {
     }
 
     public void decreaseStockOfItem(Order order) {
-        if (order.totalPrice().equals(Price.ZERO))
+        if (order.totalPrice().equals(Price.ZERO)) {
             throw new InvalidInventoryException(ErrorMessages.EXCEEDS_STOCK);
+        }
+
         order.forEachItems(orderItem -> {
             if (orderItem.promotionPolicy() != null) {
                 inventory.decreasePromotionStock(orderItem.name(), orderItem.promotionQuantity());
@@ -36,7 +38,9 @@ public class InventoryService {
     }
 
     public int getApplicableQuantity(CartItem orderItem, PromotionPolicy policy) {
-        if (policy == null) return 0;
+        if (policy == null) {
+            return 0;
+        }
         int totalQuantity = getPromotionStockQuantity(orderItem.name());
         if (totalQuantity < orderItem.quantity()) {
             return policy.getApplicableQuantity(totalQuantity);
@@ -68,12 +72,6 @@ public class InventoryService {
     private Optional<Stock> getStock(String productName) {
         return inventory.streamStock()
                 .filter(item -> item.isProductNameEqual(productName))
-                .findFirst();
-    }
-
-    private Optional<PromotionStock> getPromotionStock(String productName) {
-        return inventory.streamPromotionStock()
-                .filter(promotionItem -> promotionItem.isProductNameEqual(productName))
                 .findFirst();
     }
 
