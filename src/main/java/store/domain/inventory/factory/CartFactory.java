@@ -64,15 +64,21 @@ public class CartFactory {
         validateExistProduct(itemDetails[0]);
         String itemName = itemDetails[0];
 
-        validateProductQuantity(itemDetails[1]);
+        validateProductQuantity(itemDetails[0],itemDetails[1]);
         int itemQuantity = Integer.parseInt(itemDetails[1]);
         return new CartItem(itemName, itemQuantity);
 
     }
 
-    private static void validateProductQuantity(String itemQuantity) {
+    private static void validateProductQuantity(String name, String itemQuantity) {
+        Inventory inventory = InventoryInitializer.getInstance().getInventory();
         if (!itemQuantity.matches(CHECK_POSITIVE_INTEGER_PATTERN)) {
             throw new InvalidFormatException(ErrorMessages.INVALID_QUANTITY);
         }
+
+        if (!inventory.isAvailableQuantity(name, Integer.parseInt(itemQuantity))){
+            throw new InvalidFormatException(ErrorMessages.EXCEEDS_STOCK);
+        }
+
     }
 }

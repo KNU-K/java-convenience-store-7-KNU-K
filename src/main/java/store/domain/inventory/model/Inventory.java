@@ -96,4 +96,9 @@ public class Inventory {
         return streamStock()
                 .anyMatch(stock -> stock.getProduct().name().equals(productName));
     }
+    public boolean isAvailableQuantity(String name, int quantity) {
+        return streamStock()
+                .filter(stock -> stock.getProduct().name().equals(name))
+                .anyMatch(stock -> stock.getQuantity() >= quantity);
+    }
 }
