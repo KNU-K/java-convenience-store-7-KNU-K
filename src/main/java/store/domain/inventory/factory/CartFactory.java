@@ -24,9 +24,7 @@ public class CartFactory {
         Cart cart = new Cart();
         String[] itemGroups = cleanAndSplitInput(input);
 
-        Arrays.stream(itemGroups)
-                .map(CartFactory::splitItemGroup)
-                .forEach(itemDataArray -> processItemData(itemDataArray, cart));
+        Arrays.stream(itemGroups).map(CartFactory::splitItemGroup).forEach(itemDataArray -> processItemData(itemDataArray, cart));
 
         return cart;
     }
@@ -53,9 +51,7 @@ public class CartFactory {
     }
 
     private static void processItemData(String[] itemDataArray, Cart cart) {
-        Arrays.stream(itemDataArray)
-                .map(CartFactory::parseItemData)
-                .forEach(cart::addItem);
+        Arrays.stream(itemDataArray).map(CartFactory::parseItemData).forEach(cart::addItem);
     }
 
     private static CartItem parseItemData(String itemData) {
@@ -64,7 +60,7 @@ public class CartFactory {
         validateExistProduct(itemDetails[0]);
         String itemName = itemDetails[0];
 
-        validateProductQuantity(itemDetails[0],itemDetails[1]);
+        validateProductQuantity(itemDetails[0], itemDetails[1]);
         int itemQuantity = Integer.parseInt(itemDetails[1]);
         return new CartItem(itemName, itemQuantity);
 
@@ -76,7 +72,7 @@ public class CartFactory {
             throw new InvalidFormatException(ErrorMessages.INVALID_QUANTITY);
         }
 
-        if (!inventory.isAvailableQuantity(name, Integer.parseInt(itemQuantity))){
+        if (!inventory.isAvailableQuantity(name, Integer.parseInt(itemQuantity))) {
             throw new InvalidFormatException(ErrorMessages.EXCEEDS_STOCK);
         }
 

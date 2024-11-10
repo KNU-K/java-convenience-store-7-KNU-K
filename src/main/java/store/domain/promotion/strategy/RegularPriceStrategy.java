@@ -5,7 +5,7 @@ import store.domain.inventory.model.CartItem;
 import store.domain.inventory.model.Inventory;
 import store.domain.promotion.model.PromotionPolicy;
 
-public class RegularPriceStrategy implements PromotionStrategy{
+public class RegularPriceStrategy implements PromotionStrategy {
     @Override
     public void apply(CartItem cartItem, PromotionPolicy policy) {
         Inventory inventory = InventoryInitializer.getInstance().getInventory();
