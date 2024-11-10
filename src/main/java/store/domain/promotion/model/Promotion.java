@@ -11,6 +11,7 @@ public record Promotion(String name, PromotionPolicy policy) {
         return isExistPolicy() && policy.isValidDate();
     }
 
+
     public boolean isEligibleForExtraItem(int quantity) {
         return isExistPolicy() && policy.isEligibleForExtraItem(quantity);
     }

@@ -41,13 +41,14 @@ public class PromotionPolicy {
     }
 
     public int getGiftQuantity(int purchasedQuantity) {
+        System.out.println(purchasedQuantity);
         validateQuantity(purchasedQuantity);
         return purchasedQuantity / getTotalQuantityRequiredForPromotion();
     }
 
     public boolean isEligibleForExtraItem(int quantity) {
         validateQuantity(quantity);
-        return quantity % getTotalQuantityRequiredForPromotion() == buyQuantity;
+        return (quantity % getTotalQuantityRequiredForPromotion()) == buyQuantity;
     }
 
     private void validateQuantity(int quantity) {
@@ -62,5 +63,9 @@ public class PromotionPolicy {
 
     public int getApplicableQuantity(int limitedQuantity) {
         return getGiftQuantity(limitedQuantity) * getTotalQuantityRequiredForPromotion();
+    }
+
+    public int getApplicableQuantityOfGift(int quantity) {
+        return quantity/ getTotalQuantityRequiredForPromotion();
     }
 }
