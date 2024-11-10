@@ -1,7 +1,12 @@
 package store;
 
+import store.common.config.SupplierConfig;
+import store.common.handler.ConvenienceStoreManager;
+
 public class Application {
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        SupplierConfig config = new SupplierConfig();
+        ConvenienceStoreManager convenienceStoreManager = config.createConvenienceStoreManager();
+        convenienceStoreManager.handleOrderProcess();
     }
 }
