@@ -28,6 +28,6 @@ public class CartItem {
 
 
     public void setQuantity(int finalQuantity) {
-     this.quantity = finalQuantity;
+        this.quantity = finalQuantity;
     }
 }
