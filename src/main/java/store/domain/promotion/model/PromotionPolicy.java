@@ -66,6 +66,6 @@ public class PromotionPolicy {
     }
 
     public int getApplicableQuantityOfGift(int quantity) {
-        return quantity/ getTotalQuantityRequiredForPromotion();
+        return quantity / getTotalQuantityRequiredForPromotion();
     }
 }

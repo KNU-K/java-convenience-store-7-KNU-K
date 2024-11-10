@@ -57,7 +57,7 @@ public class PaymentService {
     }
 
     private Price calculateTotalGiftItemsPrice(Order order) {
-        Price a =  order.streamOrderItems().map(this::calculateEachGiftItemPrice)
+        Price a = order.streamOrderItems().map(this::calculateEachGiftItemPrice)
                 .reduce(NO_DISCOUNT, Price::plus);
         return a;
     }

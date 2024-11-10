@@ -73,7 +73,7 @@ public class CartFactory {
 
     private static void validateProductQuantity(String itemQuantity) {
         System.out.println(itemQuantity);
-        if (! itemQuantity.matches(CHECK_POSITIVE_INTEGER_PATTERN)) {
+        if (!itemQuantity.matches(CHECK_POSITIVE_INTEGER_PATTERN)) {
             throw new InvalidFormatException(ErrorMessages.INVALID_QUANTITY);
         }
     }

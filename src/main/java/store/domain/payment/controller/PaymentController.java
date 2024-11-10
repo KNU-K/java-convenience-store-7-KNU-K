@@ -5,13 +5,10 @@ import store.common.view.InputView;
 import store.common.view.OutputView;
 import store.domain.inventory.service.InventoryService;
 import store.domain.order.model.Order;
-import store.domain.order.model.OrderItem;
 import store.domain.payment.factory.ReceiptFactory;
 import store.domain.payment.model.Payment;
 import store.domain.payment.model.Receipt;
 import store.domain.payment.service.PaymentService;
-
-import java.util.List;
 
 public class PaymentController extends BaseController {
     private final PaymentService paymentService;

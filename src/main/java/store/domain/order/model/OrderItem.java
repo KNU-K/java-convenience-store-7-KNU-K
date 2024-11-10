@@ -82,7 +82,7 @@ public final class OrderItem {
     }
 
     public void resetPromotionQuantity() {
-        promotionQuantity =0;
+        promotionQuantity = 0;
     }
 
     public void updatePromotionQuantity(int applicableQuantity) {

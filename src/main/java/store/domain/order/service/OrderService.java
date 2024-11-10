@@ -53,7 +53,7 @@ public class OrderService {
     }
 
     public void checkSufficientQuantity(String name, int quantity) {
-        inventoryService.checkSufficientQuantity(name,quantity);
+        inventoryService.checkSufficientQuantity(name, quantity);
     }
 
     public int getApplicableQuantity(OrderItem orderItem) {

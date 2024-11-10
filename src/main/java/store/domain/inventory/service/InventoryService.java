@@ -23,7 +23,7 @@ public class InventoryService {
     }
 
     public void decreaseStockOfItem(Order order) {
-        if(order.totalPrice().equals(Price.ZERO))
+        if (order.totalPrice().equals(Price.ZERO))
             throw new InvalidInventoryException(ErrorMessages.EXCEEDS_STOCK);
         order.forEachItems(orderItem -> {
             if (orderItem.promotionPolicy() != null) {

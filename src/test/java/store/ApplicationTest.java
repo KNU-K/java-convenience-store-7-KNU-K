@@ -1,7 +1,9 @@
 package store;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import store.common.initializer.InventoryInitializer;
 
 import java.time.LocalDate;
 
@@ -10,6 +12,12 @@ import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ApplicationTest extends NsTest {
+
+    @BeforeEach
+    void setUp() {
+        InventoryInitializer inventoryInitializer = InventoryInitializer.getInstance();
+        inventoryInitializer.resetInventory();
+    }
     @Test
     void 파일에_있는_상품_목록_출력() {
         assertSimpleTest(() -> {

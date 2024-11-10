@@ -46,10 +46,11 @@ public class OrderController extends BaseController {
         }
         return new OrderItem(cartItem, price, Math.min(cartItem.quantity(), availablePromotionQuantity), policy);
     }
+
     private OrderItem confirmAndAdjustRegularPriceQuantity(OrderItem orderItem) {
         if (orderItem.promotionQuantity() == 0) return orderItem;
-        if(orderItem.quantity() == orderItem.promotionQuantity()) return orderItem;
-        int applicableQuantity=orderService.getApplicableQuantity(orderItem);
+        if (orderItem.quantity() == orderItem.promotionQuantity()) return orderItem;
+        int applicableQuantity = orderService.getApplicableQuantity(orderItem);
         int remainingQuantity = orderItem.quantity() - applicableQuantity;
         if (remainingQuantity <= 0) remainingQuantity = orderItem.quantity();
         boolean confirmRegularPrice = confirmRegularPriceOption(orderItem, remainingQuantity);
@@ -60,7 +61,6 @@ public class OrderController extends BaseController {
         }
         return orderItem;
     }
-
 
 
     private boolean confirmExtraPromotion(CartItem cartItem) {
