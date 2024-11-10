@@ -57,7 +57,7 @@ public class InventoryService {
 
     public boolean isPromotionQuantitySufficient(CartItem cartItem) {
         return getPromotionStock(cartItem.name())
-                .map(promotionStock -> promotionStock.getQuantity() >= cartItem.quantity())
+                .map(promotionStock -> promotionStock.getQuantity() > cartItem.quantity())
                 .orElse(false);
     }
 

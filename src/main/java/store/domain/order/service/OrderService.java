@@ -63,4 +63,8 @@ public class OrderService {
     public boolean isValidPromotionQuantity(int promotionQuantity, PromotionPolicy promotionPolicy) {
         return promotionPolicy.isValidPromotionQuantity(promotionQuantity);
     }
+
+    public int calculateLimitedPromotionQuantity(CartItem cartItem, PromotionPolicy policy) {
+        return policy.getApplicableQuantity(cartItem.quantity());
+    }
 }
