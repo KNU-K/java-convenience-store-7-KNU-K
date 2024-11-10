@@ -65,6 +65,7 @@ public class OrderService {
     }
 
     public int calculateLimitedPromotionQuantity(CartItem cartItem, PromotionPolicy policy) {
+        if(policy == null) return 0;
         return policy.getApplicableQuantity(cartItem.quantity());
     }
 }
