@@ -17,7 +17,7 @@ public class DataInitializer {
 
     public void initializeData() {
         List<String[]> promotionsData = FileReader.readMarkdownFile(FileConstants.PROMOTIONS_FILE_PATH);
-        promotionsData.forEach(promotionProcessor::processPromotion);
+        promotionsData.forEach(promotionProcessor::processPromotionDetails);
 
         List<String[]> productsData = FileReader.readMarkdownFile(FileConstants.PRODUCTS_FILE_PATH);
         productsData.forEach(inventoryProcessor::processStockItem);

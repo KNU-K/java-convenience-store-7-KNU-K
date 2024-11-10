@@ -1,6 +1,8 @@
 package store.common.exception;
 
 public enum ErrorMessages {
+    // 파일 관련 오류
+    INVALID_FILE("올바르지 않은 파일 입니다."),
 
     // 입력 형식 관련 오류
     INVALID_FORMAT("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요."),

@@ -7,7 +7,7 @@ public class InventoryInitializer {
     private Inventory inventory;
 
     private InventoryInitializer() {
-        inventory = new Inventory(); // 초기화
+        inventory = new Inventory();
     }
 
     public static InventoryInitializer getInstance() {

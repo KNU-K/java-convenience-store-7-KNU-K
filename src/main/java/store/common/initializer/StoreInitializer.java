@@ -12,7 +12,7 @@ public class StoreInitializer {
     private final Inventory inventory = InventoryInitializer.getInstance().getInventory();
     private final InventoryService inventoryService = new InventoryService(inventory);
 
-    private final PromotionService promotionService = new PromotionService(inventory);
+    private final PromotionService promotionService = new PromotionService();
     private final PaymentService paymentService = new PaymentService();
 
     public InventoryService getShoppingService() {
