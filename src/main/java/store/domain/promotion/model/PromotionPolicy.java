@@ -59,4 +59,7 @@ public class PromotionPolicy {
         return getGiftQuantity(limitedQuantity) * getTotalQuantityRequiredForPromotion();
     }
 
+    public boolean isValidPromotionQuantity(int promotionQuantity) {
+        return promotionQuantity >= buyQuantity;
+    }
 }

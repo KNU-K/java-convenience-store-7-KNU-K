@@ -50,6 +50,10 @@ public class OrderController extends BaseController {
     private OrderItem confirmAndAdjustRegularPriceQuantity(OrderItem orderItem) {
         if (orderItem.promotionQuantity() == 0) return orderItem;
         if (orderItem.quantity() == orderItem.promotionQuantity()) return orderItem;
+        if(!orderService.isValidPromotionQuantity(orderItem.promotionQuantity(), orderItem.promotionPolicy())){
+            orderItem.updatePromotionQuantity(0);
+            return orderItem;
+        }
         int applicableQuantity = orderService.getApplicableQuantity(orderItem);
         int remainingQuantity = orderItem.quantity() - applicableQuantity;
         if (remainingQuantity <= 0) remainingQuantity = orderItem.quantity();

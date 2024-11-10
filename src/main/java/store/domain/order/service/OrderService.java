@@ -59,4 +59,8 @@ public class OrderService {
     public int getApplicableQuantity(OrderItem orderItem) {
         return inventoryService.getApplicableQuantity(orderItem);
     }
+
+    public boolean isValidPromotionQuantity(int promotionQuantity, PromotionPolicy promotionPolicy) {
+        return promotionPolicy.isValidPromotionQuantity(promotionQuantity);
+    }
 }
