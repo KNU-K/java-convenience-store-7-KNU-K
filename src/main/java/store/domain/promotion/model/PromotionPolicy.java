@@ -69,7 +69,7 @@ public class PromotionPolicy {
 
     public int calculateExtraPromotionQuantity(CartItem cartItem) {
         Inventory inventory = InventoryInitializer.getInstance().getInventory();
-        if (cartItem.quantity() >= inventory.getPromotionStockCount(cartItem.name())) {
+        if (cartItem.quantity() > inventory.getPromotionStockCount(cartItem.name())) {
             return cartItem.quantity();
         }
         int remainder = cartItem.quantity() % getTotalQuantityRequiredForPromotion();
