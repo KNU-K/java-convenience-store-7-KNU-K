@@ -27,7 +27,6 @@ public class InventoryService {
             throw new InvalidInventoryException(ErrorMessages.EXCEEDS_STOCK);
         order.forEachItems(orderItem -> {
             if (orderItem.promotionPolicy() != null) {
-//                if(orderItem.promotionPolicy().isValidPromotionQuantity(orderItem.))
                 inventory.decreasePromotionStock(orderItem.name(), orderItem.promotionQuantity());
                 inventory.decreaseStock(orderItem.name(), orderItem.quantity() - orderItem.promotionQuantity());
             } else {
@@ -39,7 +38,10 @@ public class InventoryService {
     public int getApplicableQuantity(CartItem orderItem, PromotionPolicy policy) {
         if (policy == null) return 0;
         int totalQuantity = getPromotionStockQuantity(orderItem.name());
-        return policy.getApplicableQuantity(totalQuantity);
+        if (totalQuantity < orderItem.quantity()) {
+            return policy.getApplicableQuantity(totalQuantity);
+        }
+        return policy.getApplicableQuantity(orderItem.quantity());
     }
 
 
@@ -52,12 +54,6 @@ public class InventoryService {
         return getStockItemPrice(item.name())
                 .orElse(DEFAULT_PRICE)
                 .multiply(item.quantity());
-    }
-
-    public boolean isPromotionQuantitySufficient(CartItem cartItem) {
-        return getPromotionStock(cartItem.name())
-                .map(promotionStock -> promotionStock.getQuantity() > cartItem.quantity())
-                .orElse(false);
     }
 
     public void checkSufficientQuantity(String productName, int requiredQuantity) {
