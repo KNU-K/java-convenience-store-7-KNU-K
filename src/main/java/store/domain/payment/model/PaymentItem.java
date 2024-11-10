@@ -11,5 +11,8 @@ import store.domain.inventory.model.Price;
  */
 public record PaymentItem(String name, int quantity, int giftQuantity, Price originPrice,
                           Price promotionDiscountPrice) {
+    public static PaymentItem create(String name, int quantity, int giftItemsCount, Price price, Price giftDiscount) {
+        return new PaymentItem(name, quantity, giftItemsCount, price, giftDiscount);
+    }
 }
 

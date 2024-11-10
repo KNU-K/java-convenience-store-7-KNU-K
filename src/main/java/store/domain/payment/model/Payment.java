@@ -12,4 +12,7 @@ import java.util.List;
  */
 public record Payment(List<PaymentItem> paymentItems, Price totalPrice, Price membershipDiscountPrice,
                       Price promotionDiscountPrice) {
+    public static Payment create(List<PaymentItem> paymentItems, Price totalPrice, Price membershipDiscount, Price totalGiftDiscount) {
+        return new Payment(paymentItems, totalPrice, membershipDiscount, totalGiftDiscount);
+    }
 }

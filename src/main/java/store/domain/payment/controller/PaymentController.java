@@ -28,10 +28,8 @@ public class PaymentController extends BaseController {
         outputView.displayMessage(receipt.toString());
     }
 
-
     public boolean askForAdditionalPurchaseAfterPayment() {
         return inputView.getContinueShoppingConfirmation();
     }
-
 
 }

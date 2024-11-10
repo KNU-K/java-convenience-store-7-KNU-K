@@ -8,7 +8,6 @@ import store.domain.payment.model.PaymentItem;
 import store.domain.promotion.model.PromotionPolicy;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class PaymentService {
 
@@ -17,22 +16,31 @@ public class PaymentService {
     private static final Price MAX_MEMBERSHIP_DISCOUNT = Price.of(8000);
 
     public Payment processPayment(Order order, boolean isMembership) {
-        List<PaymentItem> paymentItems = order.streamOrderItems().map(processPaymentForEachItem()).toList();
-
+        List<PaymentItem> paymentItems = createPaymentItemsFromOrder(order);
         Price totalGiftDiscount = calculateTotalGiftDiscount(order);
 
         if (!isMembership) {
-            return new Payment(paymentItems, order.totalPrice(), NO_DISCOUNT, totalGiftDiscount);
+            return Payment.create(paymentItems, order.totalPrice(), NO_DISCOUNT, totalGiftDiscount);
         }
+
         Price membershipDiscount = calculateDiscountForMembership(order);
         if (membershipDiscount.isBiggerThan(MAX_MEMBERSHIP_DISCOUNT)) {
             membershipDiscount = MAX_MEMBERSHIP_DISCOUNT;
         }
-        return new Payment(paymentItems, order.totalPrice(), membershipDiscount, totalGiftDiscount);
+
+        return Payment.create(paymentItems, order.totalPrice(), membershipDiscount, totalGiftDiscount);
     }
 
-    private Function<OrderItem, PaymentItem> processPaymentForEachItem() {
-        return orderItem -> new PaymentItem(orderItem.name(), orderItem.quantity(), calculateGiftItemsCount(orderItem), orderItem.price(), calculateGiftDiscount(orderItem));
+    private List<PaymentItem> createPaymentItemsFromOrder(Order order) {
+        return order.streamOrderItems()
+                .map(this::createPaymentItemFromOrderItem)
+                .toList();
+    }
+
+    private PaymentItem createPaymentItemFromOrderItem(OrderItem orderItem) {
+        int giftItemsCount = calculateGiftItemsCount(orderItem);
+        Price giftDiscount = calculateGiftDiscount(orderItem);
+        return PaymentItem.create(orderItem.name(), orderItem.quantity(), giftItemsCount, orderItem.price(), giftDiscount);
     }
 
     private int calculateGiftItemsCount(OrderItem orderItem) {
@@ -44,11 +52,14 @@ public class PaymentService {
     }
 
     private Price calculateGiftDiscount(OrderItem orderItem) {
-        return orderItem.price().multiply(calculateGiftItemsCount(orderItem));
+        int giftItemsCount = calculateGiftItemsCount(orderItem);
+        return orderItem.price().multiply(giftItemsCount);
     }
 
     private Price calculateTotalGiftDiscount(Order order) {
-        return order.streamOrderItems().map(this::calculateGiftDiscount).reduce(NO_DISCOUNT, Price::plus);
+        return order.streamOrderItems()
+                .map(this::calculateGiftDiscount)
+                .reduce(NO_DISCOUNT, Price::plus);
     }
 
     private Price calculateEachGiftItemPrice(OrderItem orderItem) {
@@ -60,13 +71,15 @@ public class PaymentService {
     }
 
     private Price calculateTotalGiftItemsPrice(Order order) {
-        return order.streamOrderItems().map(this::calculateEachGiftItemPrice)
+        return order.streamOrderItems()
+                .map(this::calculateEachGiftItemPrice)
                 .reduce(NO_DISCOUNT, Price::plus);
     }
 
     private Price calculateDiscountForMembership(Order order) {
+        Price totalGiftItemsPrice = calculateTotalGiftItemsPrice(order);
         return order.totalPrice()
-                .subtract(calculateTotalGiftItemsPrice(order))
+                .subtract(totalGiftItemsPrice)
                 .applyPercentage(MEMBERSHIP_DISCOUNT_PERCENTAGE);
     }
 }
