@@ -1,6 +1,8 @@
 package store.domain.inventory.model;
 
 
+import store.domain.promotion.model.Promotion;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -38,17 +40,34 @@ public class Inventory {
     }
 
     public void decreaseStock(String name, int quantity) {
+        if(quantity ==0) return;
+        promotionStocks.values().stream()
+                .filter(existingStock -> existingStock.getProduct().name().equals(name))
+                .findFirst()
+                .map(existingStock -> {
+                    Promotion promotion = existingStock.getPromotion();
+                    if(!promotion.isValidStatus(existingStock.getQuantity())) {
+                        decreaseStockOnly(name, quantity - existingStock.getQuantity());
+                        decreasePromotionStock(name, existingStock.getQuantity());
+                        return null;
+                    }
+                    decreaseStockOnly(name, quantity);
+                    return null;
+                });
+
+    }
+    private void decreaseStockOnly(String name, int quantity){
         stocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
                 .findFirst()
                 .map(existingStock -> {
                     existingStock.updateQuantity(existingStock.getQuantity() - quantity);
-                    return true;
-                })
-                .orElse(false);
+                    return null;
+                });
     }
 
     public void decreasePromotionStock(String name, int quantity) {
+        if(quantity ==0)return;
         promotionStocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
                 .findFirst()

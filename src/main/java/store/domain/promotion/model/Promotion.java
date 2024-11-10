@@ -19,4 +19,8 @@ public record Promotion(String name, PromotionPolicy policy) {
     private boolean isExistPolicy() {
         return policy != null;
     }
+
+    public boolean isValidStatus(int quantity) {
+        return isExistPolicy() && policy.isValidDate() && policy.isValidPromotionQuantity(quantity);
+    }
 }

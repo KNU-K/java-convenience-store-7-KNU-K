@@ -27,6 +27,7 @@ public class InventoryService {
             throw new InvalidInventoryException(ErrorMessages.EXCEEDS_STOCK);
         order.forEachItems(orderItem -> {
             if (orderItem.promotionPolicy() != null) {
+//                if(orderItem.promotionPolicy().isValidPromotionQuantity(orderItem.))
                 inventory.decreasePromotionStock(orderItem.name(), orderItem.promotionQuantity());
                 inventory.decreaseStock(orderItem.name(), orderItem.quantity() - orderItem.promotionQuantity());
             } else {
