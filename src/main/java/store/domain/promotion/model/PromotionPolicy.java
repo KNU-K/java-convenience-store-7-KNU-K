@@ -3,6 +3,9 @@ package store.domain.promotion.model;
 import camp.nextstep.edu.missionutils.DateTimes;
 import store.common.exception.ErrorMessages;
 import store.common.exception.InvalidPromotionException;
+import store.common.initializer.InventoryInitializer;
+import store.domain.inventory.model.CartItem;
+import store.domain.inventory.model.Inventory;
 
 import java.time.LocalDate;
 
@@ -61,5 +64,16 @@ public class PromotionPolicy {
 
     public boolean isValidPromotionQuantity(int promotionQuantity) {
         return promotionQuantity >= buyQuantity;
+    }
+
+    public int calculateOptimalPromotionQuantity(CartItem cartItem) {
+        Inventory inventory = InventoryInitializer.getInstance().getInventory();
+        inventory.getPromotionStockCount(cartItem.name());
+        if(cartItem.quantity() >= cartItem.quantity()){
+            return cartItem.quantity();
+        }
+        int remainder = buyQuantity % getTotalQuantityRequiredForPromotion();
+        int addition = remainder / getQuantity;
+        return cartItem.quantity() + addition;
     }
 }

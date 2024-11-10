@@ -36,16 +36,17 @@ public class OrderController extends BaseController {
 
     private OrderItem createOrderItemWithPromotion(CartItem cartItem) {
         PromotionPolicy policy = orderService.getPromotionPolicy(cartItem);
-        int availablePromotionQuantity = orderService.calculateAvailablePromotionQuantity(cartItem);
-        int limitedPromotionQuantity = orderService.calculateLimitedPromotionQuantity(cartItem,policy);
         Price price = orderService.findProductPrice(cartItem.name());
         if (policy == null) {
             return new OrderItem(cartItem, price, 0, null);
         }
-        if (orderService.isEligibleForExtraItem(cartItem) && confirmExtraPromotion(cartItem)) {
-            cartItem.increaseQuantity();
+        int availablePromotionQuantity = policy.calculateOptimalPromotionQuantity(cartItem);
+        if(availablePromotionQuantity <= cartItem.quantity()){
+            return new OrderItem(cartItem, price, 0, null);
         }
-        return new OrderItem(cartItem, price, Math.min(limitedPromotionQuantity, availablePromotionQuantity), policy);
+        cartItem.increaseQuantity();
+
+        return new OrderItem(cartItem, price, availablePromotionQuantity, policy);
     }
 
     private OrderItem confirmAndAdjustRegularPriceQuantity(OrderItem orderItem) {

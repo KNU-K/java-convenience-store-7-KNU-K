@@ -123,4 +123,12 @@ public class Inventory {
 
         return totalQuantity >= quantity;
     }
+
+    public int getPromotionStockCount(String name) {
+        return streamPromotionStock()
+                .filter(stock -> stock.getProduct().name().equals(name))
+                .mapToInt(Stock::getQuantity)  // Assuming stock has a quantity field
+                .findFirst()
+                .orElse(0);  // Return 0 if the product is not found
+    }
 }
