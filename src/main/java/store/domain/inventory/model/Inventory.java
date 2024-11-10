@@ -2,6 +2,7 @@ package store.domain.inventory.model;
 
 
 import store.domain.promotion.model.Promotion;
+import store.domain.promotion.model.PromotionPolicy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -130,5 +131,11 @@ public class Inventory {
                 .mapToInt(Stock::getQuantity)  // Assuming stock has a quantity field
                 .findFirst()
                 .orElse(0);  // Return 0 if the product is not found
+    }
+
+    public int getApplicableQuantity(CartItem cartItem, PromotionPolicy policy) {
+        if (policy == null) return 0;
+        int totalQuantity = getPromotionStockCount(cartItem.name());
+        return policy.getApplicableQuantity(totalQuantity);
     }
 }

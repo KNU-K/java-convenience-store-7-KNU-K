@@ -76,4 +76,5 @@ public class PromotionPolicy {
         int addition = remainder / getQuantity;
         return cartItem.quantity() + addition;
     }
+
 }

@@ -56,8 +56,9 @@ public class OrderService {
         inventoryService.checkSufficientQuantity(name, quantity);
     }
 
-    public int getApplicableQuantity(OrderItem orderItem) {
-        return inventoryService.getApplicableQuantity(orderItem);
+    public int getApplicableQuantity(CartItem cartItem) {
+        PromotionPolicy policy = getPromotionPolicy(cartItem);
+        return inventoryService.getApplicableQuantity(cartItem, policy);
     }
 
     public boolean isValidPromotionQuantity(int promotionQuantity, PromotionPolicy promotionPolicy) {
@@ -67,5 +68,29 @@ public class OrderService {
     public int calculateLimitedPromotionQuantity(CartItem cartItem, PromotionPolicy policy) {
         if(policy == null) return 0;
         return policy.getApplicableQuantity(cartItem.quantity());
+    }
+
+    public int getRemainingQuantity(CartItem cartItem) {
+        return cartItem.quantity() - getApplicableQuantity(cartItem);
+    }
+    public int calculateAvailablePromotionQuantity(PromotionPolicy policy, CartItem cartItem) {
+        return policy.calculateOptimalPromotionQuantity(cartItem);
+    }
+
+    public boolean isPromotionQuantityValid(int availablePromotionQuantity, PromotionPolicy policy) {
+        return availablePromotionQuantity > 0 && policy != null && policy.isValidPromotionQuantity(availablePromotionQuantity);
+    }
+    public OrderItem createOrderItemWithPromotion(CartItem cartItem, PromotionPolicy policy) {
+        int availablePromotionQuantity = policy.calculateOptimalPromotionQuantity(cartItem);
+        if (availablePromotionQuantity == 0) {
+            return new OrderItem(cartItem, findProductPrice(cartItem.name()), 0, policy);
+        }
+        if (cartItem.quantity() == availablePromotionQuantity) {
+            return new OrderItem(cartItem,  findProductPrice(cartItem.name()), policy.calculateOptimalPromotionQuantity(cartItem), policy);
+        }
+        if (!isPromotionQuantityValid(availablePromotionQuantity, policy)) {
+            return new OrderItem(cartItem,  findProductPrice(cartItem.name()), 0, policy);
+        }
+        return null;
     }
 }

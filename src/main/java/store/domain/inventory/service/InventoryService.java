@@ -36,8 +36,7 @@ public class InventoryService {
         });
     }
 
-    public int getApplicableQuantity(OrderItem orderItem) {
-        PromotionPolicy policy = orderItem.promotionPolicy();
+    public int getApplicableQuantity(CartItem orderItem, PromotionPolicy policy) {
         if (policy == null) return 0;
         int totalQuantity = getPromotionStockQuantity(orderItem.name());
         return policy.getApplicableQuantity(totalQuantity);

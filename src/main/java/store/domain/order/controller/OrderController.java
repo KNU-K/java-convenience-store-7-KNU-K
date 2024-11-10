@@ -9,7 +9,10 @@ import store.domain.inventory.model.Price;
 import store.domain.order.model.Order;
 import store.domain.order.model.OrderItem;
 import store.domain.order.service.OrderService;
+import store.domain.promotion.factory.PromotionStrategySelector;
 import store.domain.promotion.model.PromotionPolicy;
+import store.domain.promotion.strategy.PromotionStrategy;
+import store.domain.promotion.strategy.PromotionStrategyType;
 
 import java.util.List;
 
@@ -29,43 +32,44 @@ public class OrderController extends BaseController {
 
     private List<OrderItem> createOrderItems(Cart cart) {
         return cart.streamItem()
-                .map(this::createOrderItemWithPromotion)
+                .map(this::applyExtraPromotion)
                 .map(this::confirmAndAdjustRegularPriceQuantity)
                 .toList();
     }
 
-    private OrderItem createOrderItemWithPromotion(CartItem cartItem) {
+    private CartItem applyExtraPromotion(CartItem cartItem) {
         PromotionPolicy policy = orderService.getPromotionPolicy(cartItem);
-        Price price = orderService.findProductPrice(cartItem.name());
-        if (policy == null) {
-            return new OrderItem(cartItem, price, 0, null);
+        PromotionStrategy strategy =  PromotionStrategySelector.select(cartItem, policy);
+        if(strategy == null || PromotionStrategySelector.toType(strategy) != PromotionStrategyType.EXTRA_QUANTITY){
+            return cartItem;
         }
-        int availablePromotionQuantity = policy.calculateOptimalPromotionQuantity(cartItem);
-        if(availablePromotionQuantity <= cartItem.quantity()){
-            return new OrderItem(cartItem, price, 0, null);
-        }
-        cartItem.increaseQuantity();
 
-        return new OrderItem(cartItem, price, availablePromotionQuantity, policy);
+        if(confirmExtraPromotion(cartItem)){
+            strategy.apply(cartItem,policy);
+        }
+
+        return cartItem;
     }
 
-    private OrderItem confirmAndAdjustRegularPriceQuantity(OrderItem orderItem) {
-        if (orderItem.promotionQuantity() == 0) return orderItem;
-        if (orderItem.quantity() == orderItem.promotionQuantity()) return orderItem;
-        if(!orderService.isValidPromotionQuantity(orderItem.promotionQuantity(), orderItem.promotionPolicy())){
-            orderItem.updatePromotionQuantity(0);
-            return orderItem;
+    private OrderItem confirmAndAdjustRegularPriceQuantity(CartItem cartItem) {
+
+        PromotionPolicy policy = orderService.getPromotionPolicy(cartItem);
+        PromotionStrategy strategy =  PromotionStrategySelector.select(cartItem, policy);
+        Price price = orderService.findProductPrice(cartItem.name());
+        if(strategy == null || PromotionStrategySelector.toType(strategy) != PromotionStrategyType.REGULAR_PRICE_STRATEGY){
+            return new OrderItem(cartItem, price, 0, policy);
         }
-        int applicableQuantity = orderService.getApplicableQuantity(orderItem);
-        int remainingQuantity = orderItem.quantity() - applicableQuantity;
-        if (remainingQuantity <= 0) remainingQuantity = orderItem.quantity();
-        boolean confirmRegularPrice = confirmRegularPriceOption(orderItem, remainingQuantity);
-        orderService.checkSufficientQuantity(orderItem.name(), orderItem.quantity());
-        if (!confirmRegularPrice) {
-            orderItem.decreaseQuantity(remainingQuantity);
-            orderItem.updatePromotionQuantity(applicableQuantity);
+        orderService.createOrderItemWithPromotion(cartItem, policy);
+
+        int remainingQuantity =orderService.getRemainingQuantity(cartItem);
+        int applicableQuantity=orderService.getApplicableQuantity(cartItem);
+        int availablePromotionQuantity = policy.calculateOptimalPromotionQuantity(cartItem);
+        if(confirmRegularPriceOption(cartItem, remainingQuantity)){
+            strategy.apply(cartItem,policy);
+            orderService.checkSufficientQuantity(cartItem.name(), cartItem.quantity());
+            return new OrderItem(cartItem, price, availablePromotionQuantity, policy);
         }
-        return orderItem;
+        return new OrderItem(cartItem, price, applicableQuantity, policy);
     }
 
 
@@ -73,7 +77,7 @@ public class OrderController extends BaseController {
         return inputView.confirmExtraPromotion(cartItem.name());
     }
 
-    private boolean confirmRegularPriceOption(OrderItem cartItem, int remainingQuantity) {
-        return inputView.confirmRegularPriceOption(cartItem.name(), remainingQuantity);
+    private boolean confirmRegularPriceOption(CartItem orderItem, int remainingQuantity) {
+        return inputView.confirmRegularPriceOption(orderItem.name(), remainingQuantity);
     }
 }
