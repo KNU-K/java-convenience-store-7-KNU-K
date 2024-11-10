@@ -52,7 +52,7 @@ public class PaymentService {
         if (orderItem.promotionPolicy() == null) {
             return Price.of(0);
         }
-        int quantity = orderItem.promotionPolicy().getApplicableQuantityOfGift(orderItem.quantity());
+        int quantity = orderItem.promotionQuantity();
         return orderItem.price().multiply(quantity);
     }
 
