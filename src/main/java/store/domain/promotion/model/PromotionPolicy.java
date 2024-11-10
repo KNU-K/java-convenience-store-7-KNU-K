@@ -41,7 +41,6 @@ public class PromotionPolicy {
     }
 
     public int getGiftQuantity(int purchasedQuantity) {
-        System.out.println(purchasedQuantity);
         validateQuantity(purchasedQuantity);
         return purchasedQuantity / getTotalQuantityRequiredForPromotion();
     }

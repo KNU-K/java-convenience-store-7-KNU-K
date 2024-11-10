@@ -19,10 +19,10 @@ public class PaymentService {
         List<PaymentItem> paymentItems = order.streamOrderItems().map(processPaymentForEachItem()).toList();
 
         Price totalGiftDiscount = calculateTotalGiftDiscount(order);
+
         if (!isMembership) {
             return new Payment(paymentItems, order.totalPrice(), NO_DISCOUNT, totalGiftDiscount);
         }
-
         Price membershipDiscount = calculateDiscountForMembership(order);
         return new Payment(paymentItems, order.totalPrice(), membershipDiscount, totalGiftDiscount);
     }
@@ -40,8 +40,7 @@ public class PaymentService {
     }
 
     private Price calculateGiftDiscount(OrderItem orderItem) {
-        int giftItemsCount = calculateGiftItemsCount(orderItem);
-        return orderItem.price().multiply(giftItemsCount);
+        return orderItem.price().multiply(calculateGiftItemsCount(orderItem));
     }
 
     private Price calculateTotalGiftDiscount(Order order) {
