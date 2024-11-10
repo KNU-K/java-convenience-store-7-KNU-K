@@ -43,6 +43,7 @@ public class SupplierConfig {
     private InputView createInputView() {
         return new InputView(inputRetryHandler);
     }
+
     private PromotionConfirmCallback createOrderControllerCallback() {
         return new OrderController(createInputView(), createOutputView(), null);
     }

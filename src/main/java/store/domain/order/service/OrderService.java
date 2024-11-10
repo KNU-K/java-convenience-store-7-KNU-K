@@ -106,6 +106,7 @@ public class OrderService {
         PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
         strategy.apply(cartItem, policy);
     }
+
     private boolean isExtraQuantityPromotion(PromotionStrategy strategy) {
         return PromotionStrategySelector.toType(strategy) == PromotionStrategyType.EXTRA_QUANTITY;
     }
