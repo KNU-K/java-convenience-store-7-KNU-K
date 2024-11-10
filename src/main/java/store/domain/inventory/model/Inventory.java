@@ -1,32 +1,25 @@
 package store.domain.inventory.model;
 
-
-import store.domain.promotion.model.Promotion;
 import store.domain.promotion.model.PromotionPolicy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Inventory {
     private static final int INIT_SEQUENCE_ID = 1;
-    private final Map<Integer, Stock> stocks;
-    private final Map<Integer, PromotionStock> promotionStocks;
-
-    public Inventory() {
-        this.stocks = new HashMap<>();
-        this.promotionStocks = new HashMap<>();
-    }
+    private final Map<Integer, Stock> stocks = new HashMap<>();
+    private final Map<Integer, PromotionStock> promotionStocks = new HashMap<>();
 
     private Integer getCurrentSequenceId() {
         return INIT_SEQUENCE_ID + stocks.size() + promotionStocks.size();
     }
 
     public void addStock(Stock stock) {
-        if (!increaseStockIfExists(stock)) {
-            Integer sequenceId = getCurrentSequenceId();
-            stocks.put(sequenceId, stock);
-        }
+        if (increaseStockIfExists(stock)) return;
+        Integer sequenceId = getCurrentSequenceId();
+        stocks.put(sequenceId, stock);
     }
 
     private boolean increaseStockIfExists(Stock stock) {
@@ -41,49 +34,46 @@ public class Inventory {
     }
 
     public void decreaseStock(String name, int quantity) {
-        if(quantity ==0) return;
-        promotionStocks.values().stream()
-                .filter(existingStock -> existingStock.getProduct().name().equals(name))
-                .findFirst()
-                .map(existingStock -> {
-                    Promotion promotion = existingStock.getPromotion();
-                    if(!promotion.isValidStatus(existingStock.getQuantity())) {
-                        decreaseStockOnly(name, quantity - existingStock.getQuantity());
-                        decreasePromotionStock(name, existingStock.getQuantity());
-                        return null;
-                    }
-                    decreaseStockOnly(name, quantity);
-                    return null;
-                });
+        if (quantity == 0) return;
 
+        // Handle promotion stock decrease if it exists
+        Optional<PromotionStock> promotionStockOpt = promotionStocks.values().stream()
+                .filter(existingStock -> existingStock.getProduct().name().equals(name))
+                .findFirst();
+
+        // If promotion stock exists
+        if (promotionStockOpt.isPresent()) {
+            PromotionStock existingStock = promotionStockOpt.get();
+
+            decreaseStockOnly(name, quantity - existingStock.getQuantity());
+            decreasePromotionStock(name, existingStock.getQuantity());
+
+        } else {
+            // If no promotion stock exists, just decrease regular stock
+            decreaseStockOnly(name, quantity);
+        }
     }
-    private void decreaseStockOnly(String name, int quantity){
+
+    private void decreaseStockOnly(String name, int quantity) {
+        if (quantity == 0) return;
         stocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
                 .findFirst()
-                .map(existingStock -> {
-                    existingStock.updateQuantity(existingStock.getQuantity() - quantity);
-                    return null;
-                });
+                .ifPresent(existingStock -> existingStock.updateQuantity(existingStock.getQuantity() - quantity));
     }
 
     public void decreasePromotionStock(String name, int quantity) {
-        if(quantity ==0)return;
+        if (quantity == 0) return;
         promotionStocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
                 .findFirst()
-                .map(existingStock -> {
-                    existingStock.updateQuantity(existingStock.getQuantity() - quantity);
-                    return true;
-                })
-                .orElse(false);
+                .ifPresent(existingStock -> existingStock.updateQuantity(existingStock.getQuantity() - quantity));
     }
 
     public void addPromotionStock(PromotionStock promotionStock) {
         Integer sequenceId = getCurrentSequenceId();
-        this.promotionStocks.put(sequenceId, promotionStock);
+        promotionStocks.put(sequenceId, promotionStock);
     }
-
 
     @Override
     public String toString() {
@@ -113,24 +103,23 @@ public class Inventory {
     }
 
     public boolean isExistProduct(String productName) {
-        return streamStock()
-                .anyMatch(stock -> stock.getProduct().name().equals(productName));
+        return streamStock().anyMatch(stock -> stock.getProduct().name().equals(productName));
     }
+
     public boolean isAvailableQuantity(String name, int quantity) {
         int totalQuantity = Stream.concat(streamStock(), streamPromotionStock())
                 .filter(stock -> stock.getProduct().name().equals(name))
-                .mapToInt(stock -> stock.getQuantity())
+                .mapToInt(Stock::getQuantity)
                 .sum();
-
         return totalQuantity >= quantity;
     }
 
     public int getPromotionStockCount(String name) {
         return streamPromotionStock()
                 .filter(stock -> stock.getProduct().name().equals(name))
-                .mapToInt(Stock::getQuantity)  // Assuming stock has a quantity field
+                .mapToInt(Stock::getQuantity)
                 .findFirst()
-                .orElse(0);  // Return 0 if the product is not found
+                .orElse(0);
     }
 
     public int getApplicableQuantity(CartItem cartItem, PromotionPolicy policy) {
