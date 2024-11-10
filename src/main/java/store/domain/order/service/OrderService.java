@@ -24,10 +24,9 @@ public class OrderService {
         this.promotionCallback = promotionCallback;
     }
 
-
     public OrderItem applyPromotion(CartItem cartItem) {
         PromotionPolicy policy = getPromotionPolicy(cartItem);
-        Price price = findProductPrice(cartItem.name());
+        Price price = inventoryService.getProductPrice(cartItem.name());
         PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
 
         if (isValidPromotion(policy, strategy) && isExtraQuantityPromotion(strategy)) {
@@ -44,6 +43,15 @@ public class OrderService {
         return createOrderItem(cartItem, price, 0, policy);
     }
 
+    public Price calculateTotalCartPrice(List<OrderItem> orderItems) {
+        return orderItems.stream()
+                .map(inventoryService::getTotalPriceOfEachItem)
+                .reduce(Price.ZERO, Price::plus);
+    }
+
+    public PromotionPolicy getPromotionPolicy(CartItem cartItem) {
+        return promotionService.getPromotionPolicy(cartItem);
+    }
 
     private OrderItem applyExtraPromotion(CartItem cartItem, Price price, PromotionPolicy policy) {
         int promotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
@@ -66,45 +74,30 @@ public class OrderService {
         return createOrderItem(cartItem, price, applicableQuantity, policy);
     }
 
-    public PromotionPolicy getPromotionPolicy(CartItem cartItem) {
-        return promotionService.getPromotionPolicy(cartItem);
+    private void applyPromotionStrategy(CartItem cartItem, PromotionPolicy policy) {
+        PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
+        strategy.apply(cartItem, policy);
     }
-
-    public Price calculateTotalCartPrice(List<OrderItem> orderItems) {
-        return orderItems.stream()
-                .map(inventoryService::getTotalPriceOfEachItem)
-                .reduce(Price.ZERO, Price::plus);
-    }
-
-    public Price findProductPrice(String productName) {
-        return inventoryService.getProductPrice(productName);
-    }
-
-    public void checkSufficientQuantity(String name, int quantity) {
-        inventoryService.checkSufficientQuantity(name, quantity);
-    }
-
-    public int getApplicableQuantity(CartItem cartItem) {
-        PromotionPolicy policy = getPromotionPolicy(cartItem);
-        return inventoryService.getApplicableQuantity(cartItem, policy);
-    }
-
-    public int getRemainingQuantity(CartItem cartItem) {
-        return cartItem.quantity() - getApplicableQuantity(cartItem);
-    }
-
 
     private OrderItem createOrderItem(CartItem cartItem, Price price, int promotionQuantity, PromotionPolicy promotionPolicy) {
         return OrderFactory.createOrderItem(cartItem, price, promotionQuantity, promotionPolicy);
     }
 
-    private boolean isValidPromotion(PromotionPolicy policy, PromotionStrategy strategy) {
-        return policy != null && strategy != null;
+    private void checkSufficientQuantity(String name, int quantity) {
+        inventoryService.checkSufficientQuantity(name, quantity);
     }
 
-    public void applyPromotionStrategy(CartItem cartItem, PromotionPolicy policy) {
-        PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
-        strategy.apply(cartItem, policy);
+    private int getApplicableQuantity(CartItem cartItem) {
+        PromotionPolicy policy = getPromotionPolicy(cartItem);
+        return inventoryService.getApplicableQuantity(cartItem, policy);
+    }
+
+    private int getRemainingQuantity(CartItem cartItem) {
+        return cartItem.quantity() - getApplicableQuantity(cartItem);
+    }
+
+    private boolean isValidPromotion(PromotionPolicy policy, PromotionStrategy strategy) {
+        return policy != null && strategy != null;
     }
 
     private boolean isExtraQuantityPromotion(PromotionStrategy strategy) {
