@@ -75,5 +75,10 @@ public class CartFactory {
         if (!itemQuantity.matches(CHECK_POSITIVE_INTEGER_PATTERN)) {
             throw new InvalidFormatException(ErrorMessages.INVALID_QUANTITY);
         }
+
+        if (!inventory.isAvailableQuantity(name, Integer.parseInt(itemQuantity))){
+            throw new InvalidFormatException(ErrorMessages.EXCEEDS_STOCK);
+        }
+
     }
 }
