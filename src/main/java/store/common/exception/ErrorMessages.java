@@ -16,7 +16,9 @@ public enum ErrorMessages {
 
     // 프로모션 관련 오류
     INVALID_PROMOTION("유효하지 않은 프로모션입니다. 다시 확인해 주세요."),
-    INVALID_DATE("프로모션 날짜가 올바르지 않습니다. 시작일과 종료일을 확인해 주세요.");
+    INVALID_DATE("프로모션 날짜가 올바르지 않습니다. 시작일과 종료일을 확인해 주세요."),
+    PROMOTION_EXPIRED("프로모션 기간이 만료되었습니다. 새로운 프로모션을 확인해 주세요."),
+    PROMOTION_NOT_ELIGIBLE("해당 프로모션에 해당하지 않습니다. 다른 조건을 확인해 주세요.");
 
     private static final String PREFIX = "[ERROR] ";
     private final String message;
