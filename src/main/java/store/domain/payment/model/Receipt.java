@@ -20,7 +20,8 @@ public class Receipt {
     private static final String FINAL_PRICE_LABEL = "내실돈";
     private static final String ITEM_FORMAT = "%-15s%-10d%-10s";
     private static final String GIFT_FORMAT = "%-15s%-10d";
-    private static final String DISCOUNT_FORMAT = "%-25s%-10s%-10s";
+    private static final String DISCOUNT_FORMAT = "%-25s%-10s-%-10s";
+    private static final String TOTAL_AMOUNT_FORMAT = "%-25s%-10s%-10s";
     private static final String FINAL_PRICE_FORMAT = "%-25s%-10s%-10s";
 
     private final List<PaymentItem> items;
@@ -50,15 +51,9 @@ public class Receipt {
     }
 
     private String formatProductItems() {
-        String productItems = items.stream()
+        return items.stream()
                 .map(this::formatProductItem)
                 .reduce("", (acc, itemString) -> acc + itemString);
-
-        int totalQuantity = items.stream()
-                .mapToInt(PaymentItem::quantity)
-                .sum();
-
-        return productItems + formatTotalAmount(totalQuantity);
     }
 
     private String formatProductItem(PaymentItem item) {
@@ -80,14 +75,18 @@ public class Receipt {
     }
 
     private String formatPriceSummary() {
+        int totalQuantity = items.stream()
+                .mapToInt(PaymentItem::quantity)
+                .sum();
         return DIVIDER + LINE_SEPARATOR
+                + formatTotalAmount(totalQuantity)
                 + formatDiscountInfo(PROMOTION_DISCOUNT_LABEL, promotionDiscountPrice)
                 + formatDiscountInfo(MEMBERSHIP_DISCOUNT_LABEL, membershipDiscountPrice)
                 + formatFinalPrice();
     }
 
     private String formatTotalAmount(int totalQuantity) {
-        return String.format(DISCOUNT_FORMAT, TOTAL_AMOUNT_LABEL, totalQuantity, totalPrice) + LINE_SEPARATOR;
+        return String.format(TOTAL_AMOUNT_FORMAT, TOTAL_AMOUNT_LABEL, totalQuantity, totalPrice) + LINE_SEPARATOR;
     }
 
     private String formatDiscountInfo(String label, Price discountPrice) {
