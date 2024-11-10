@@ -16,11 +16,11 @@ public record Promotion(String name, PromotionPolicy policy) {
         return isExistPolicy() && policy.isEligibleForExtraItem(quantity);
     }
 
-    private boolean isExistPolicy() {
-        return policy != null;
-    }
-
     public boolean isValidStatus(int quantity) {
         return isExistPolicy() && policy.isValidDate() && policy.isValidPromotionQuantity(quantity);
+    }
+
+    private boolean isExistPolicy() {
+        return policy != null;
     }
 }

@@ -14,16 +14,15 @@ public class PromotionProcessor {
         this.promotionFactory = promotionFactory;
     }
 
-    public void processPromotion(String[] parts) {
-        String name = parts[0];
-        int buy = Integer.parseInt(parts[1]);
-        int get = Integer.parseInt(parts[2]);
+    public void processPromotionDetails(String[] promotionDetails) {
+        String promotionName = promotionDetails[0];
+        int buyQuantity = Integer.parseInt(promotionDetails[1]);
+        int getQuantity = Integer.parseInt(promotionDetails[2]);
 
-        LocalDate startDate = LocalDate.parse(parts[3], DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse(parts[4], DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate startDate = LocalDate.parse(promotionDetails[3], DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate endDate = LocalDate.parse(promotionDetails[4], DateTimeFormatter.ISO_LOCAL_DATE);
 
-        PromotionPolicy policy = new PromotionPolicy(buy, get, startDate, endDate);
-        promotionFactory.addPolicy(name, policy);
+        PromotionPolicy promotionPolicy = new PromotionPolicy(buyQuantity, getQuantity, startDate, endDate);
+        promotionFactory.addPolicy(promotionName, promotionPolicy);
     }
 }
-
