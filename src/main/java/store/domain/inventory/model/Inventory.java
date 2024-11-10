@@ -116,8 +116,11 @@ public class Inventory {
                 .anyMatch(stock -> stock.getProduct().name().equals(productName));
     }
     public boolean isAvailableQuantity(String name, int quantity) {
-        return streamStock()
+        int totalQuantity = Stream.concat(streamStock(), streamPromotionStock())
                 .filter(stock -> stock.getProduct().name().equals(name))
-                .anyMatch(stock -> stock.getQuantity() >= quantity);
+                .mapToInt(stock -> stock.getQuantity())
+                .sum();
+
+        return totalQuantity >= quantity;
     }
 }
