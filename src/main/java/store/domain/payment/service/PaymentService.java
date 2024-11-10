@@ -14,6 +14,7 @@ public class PaymentService {
 
     private static final int MEMBERSHIP_DISCOUNT_PERCENTAGE = 30;
     private static final Price NO_DISCOUNT = Price.ZERO;
+    private static final Price MAX_MEMBERSHIP_DISCOUNT = Price.of(8000);
 
     public Payment processPayment(Order order, boolean isMembership) {
         List<PaymentItem> paymentItems = order.streamOrderItems().map(processPaymentForEachItem()).toList();
@@ -24,6 +25,9 @@ public class PaymentService {
             return new Payment(paymentItems, order.totalPrice(), NO_DISCOUNT, totalGiftDiscount);
         }
         Price membershipDiscount = calculateDiscountForMembership(order);
+        if (membershipDiscount.isBiggerThan(MAX_MEMBERSHIP_DISCOUNT)) {
+            membershipDiscount = MAX_MEMBERSHIP_DISCOUNT;
+        }
         return new Payment(paymentItems, order.totalPrice(), membershipDiscount, totalGiftDiscount);
     }
 
