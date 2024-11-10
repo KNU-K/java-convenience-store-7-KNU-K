@@ -32,9 +32,7 @@ public class OrderController extends BaseController {
     }
 
     private List<OrderItem> createOrderItems(Cart cart) {
-        return cart.streamItem()
-                .map(this::applyPromotion)
-                .toList();
+        return cart.streamItem().map(this::applyPromotion).toList();
     }
 
     private OrderItem applyPromotion(CartItem cartItem) {
@@ -47,26 +45,21 @@ public class OrderController extends BaseController {
         if (isValidPromotion(policy, strategy) && PromotionStrategySelector.toType(strategy) == PromotionStrategyType.REGULAR_PRICE_STRATEGY) {
             return applyRegularPromotion(cartItem, price, policy);
         }
-        if (isValidPromotion(policy, strategy)) {
-            return new OrderItem(cartItem, price, 0, policy);
-        }
         if (policy != null && policy.isValidDate()) {
             orderService.checkSufficientQuantity(cartItem.name(), cartItem.quantity());
-            return new OrderItem(cartItem, price, orderService.getApplicableQuantity(cartItem), policy);
+            return createOrderItem(cartItem, price, orderService.getApplicableQuantity(cartItem), policy);
         }
-        return new OrderItem(cartItem, price, 0, policy);
+        return createOrderItem(cartItem, price, 0, policy);
     }
 
     private OrderItem applyExtraPromotion(CartItem cartItem, Price price, PromotionPolicy policy) {
         int promotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
-        if (promotionQuantity <= cartItem.quantity()) {
-            return new OrderItem(cartItem, price, 0, null);
-        }
+
         if (confirmExtraPromotion(cartItem)) {
             orderService.applyPromotionStrategy(cartItem, policy);
         }
 
-        return new OrderItem(cartItem, price, promotionQuantity, policy);
+        return createOrderItem(cartItem, price, promotionQuantity, policy);
     }
 
     private OrderItem applyRegularPromotion(CartItem cartItem, Price price, PromotionPolicy policy) {
@@ -75,20 +68,24 @@ public class OrderController extends BaseController {
         int remainingQuantity = orderService.getRemainingQuantity(cartItem);
 
         if (availablePromotionQuantity == 0) {
-            return OrderFactory.createOrderItem(cartItem, price, 0, policy);
+            return createOrderItem(cartItem, price, 0, policy);
         }
         if (cartItem.quantity() == availablePromotionQuantity) {
-            return OrderFactory.createOrderItem(cartItem, price, policy.calculateExtraPromotionQuantity(cartItem), policy);
+            return createOrderItem(cartItem, price, policy.calculateExtraPromotionQuantity(cartItem), policy);
         }
         if (!orderService.isPromotionQuantityValid(availablePromotionQuantity, policy)) {
-            return OrderFactory.createOrderItem(cartItem, price, 0, policy);
+            return createOrderItem(cartItem, price, 0, policy);
         }
         if (!confirmRegularPriceOption(cartItem, remainingQuantity)) {
             orderService.applyPromotionStrategy(cartItem, policy);
         }
-        return OrderFactory.createOrderItem(cartItem, price, applicableQuantity, policy);
+        return createOrderItem(cartItem, price, applicableQuantity, policy);
     }
 
+
+    private OrderItem createOrderItem(CartItem cartItem, Price price, int promotionQuantity, PromotionPolicy promotionPolicy) {
+        return OrderFactory.createOrderItem(cartItem, price, promotionQuantity, promotionPolicy);
+    }
 
     private boolean isValidPromotion(PromotionPolicy policy, PromotionStrategy strategy) {
         return policy != null && strategy != null;
