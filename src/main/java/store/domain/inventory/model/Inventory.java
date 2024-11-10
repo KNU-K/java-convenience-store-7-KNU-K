@@ -91,4 +91,9 @@ public class Inventory {
     public Stream<Stock> streamStock() {
         return stocks.values().stream();
     }
+
+    public boolean isExistProduct(String productName) {
+        return streamStock()
+                .anyMatch(stock -> stock.getProduct().name().equals(productName));
+    }
 }
