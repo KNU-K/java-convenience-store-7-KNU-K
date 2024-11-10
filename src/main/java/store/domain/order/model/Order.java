@@ -6,15 +6,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-
-public final class Order {
-    private final List<OrderItem> orderItems;
-    private final Price totalPrice;
-
-    public Order(List<OrderItem> orderItems, Price totalPrice) {
-        this.orderItems = orderItems;
-        this.totalPrice = totalPrice;
-    }
+public record Order(List<OrderItem> orderItems, Price totalPrice) {
 
     public Stream<OrderItem> streamOrderItems() {
         return orderItems.stream();
@@ -24,9 +16,7 @@ public final class Order {
         orderItems.forEach(action);
     }
 
-
     public Price totalPrice() {
         return totalPrice;
     }
-
 }

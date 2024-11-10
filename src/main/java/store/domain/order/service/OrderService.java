@@ -39,8 +39,7 @@ public class OrderService {
             checkSufficientQuantity(cartItem.name(), cartItem.quantity());
             return createOrderItem(cartItem, price, getApplicableQuantity(cartItem), policy);
         }
-
-        return createOrderItem(cartItem, price, 0, policy);
+        return createNoPromotionOrderItem(cartItem, price, policy);
     }
 
     public Price calculateTotalCartPrice(List<OrderItem> orderItems) {
@@ -81,6 +80,10 @@ public class OrderService {
 
     private OrderItem createOrderItem(CartItem cartItem, Price price, int promotionQuantity, PromotionPolicy promotionPolicy) {
         return OrderFactory.createOrderItem(cartItem, price, promotionQuantity, promotionPolicy);
+    }
+
+    private OrderItem createNoPromotionOrderItem(CartItem cartItem, Price price, PromotionPolicy policy) {
+        return OrderFactory.createOrderItem(cartItem, price, 0, policy);
     }
 
     private void checkSufficientQuantity(String name, int quantity) {
