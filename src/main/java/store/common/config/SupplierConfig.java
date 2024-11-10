@@ -8,6 +8,7 @@ import store.common.view.InputView;
 import store.common.view.OutputView;
 import store.domain.inventory.controller.InventoryController;
 import store.domain.order.controller.OrderController;
+import store.domain.order.service.PromotionConfirmCallback;
 import store.domain.payment.controller.PaymentController;
 
 import java.util.function.Supplier;
@@ -23,7 +24,7 @@ public class SupplierConfig {
         StoreInitializer storeInitializer = new StoreInitializer();
 
         Supplier<InventoryController> shoppingControllerSupplier = () -> new InventoryController(createInputView(), createOutputView(), storeInitializer.getShoppingService());
-        Supplier<OrderController> orderControllerSupplier = () -> new OrderController(createInputView(), createOutputView(), storeInitializer.getOrderService());
+        Supplier<OrderController> orderControllerSupplier = () -> new OrderController(createInputView(), createOutputView(), storeInitializer.getOrderService(createOrderControllerCallback()));
         Supplier<PaymentController> paymentControllerSupplier = () -> new PaymentController(createInputView(), createOutputView(), storeInitializer.getPaymentService(), storeInitializer.getShoppingService());
 
         this.convenienceStoreManager = new ConvenienceStoreManager(shoppingControllerSupplier, orderControllerSupplier, paymentControllerSupplier);
@@ -42,5 +43,7 @@ public class SupplierConfig {
     private InputView createInputView() {
         return new InputView(inputRetryHandler);
     }
-
+    private PromotionConfirmCallback createOrderControllerCallback() {
+        return new OrderController(createInputView(), createOutputView(), null);
+    }
 }
