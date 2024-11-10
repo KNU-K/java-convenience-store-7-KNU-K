@@ -1,5 +1,7 @@
 package store.domain.promotion.factory;
 
+import store.common.exception.ErrorMessages;
+import store.common.exception.InvalidPromotionException;
 import store.domain.promotion.model.Promotion;
 import store.domain.promotion.model.PromotionPolicy;
 
@@ -15,7 +17,7 @@ public class PromotionFactory {
 
     public void addPolicy(String name, PromotionPolicy policy) {
         if (name == null || policy == null) {
-            throw new IllegalArgumentException("Key and policy must not be null");
+            throw new InvalidPromotionException(ErrorMessages.INVALID_PROMOTION);
         }
         policies.put(name, policy);
     }
@@ -23,7 +25,7 @@ public class PromotionFactory {
     public Promotion get(String name) {
         PromotionPolicy policy = policies.get(name);
         if (policy == null) {
-            throw new IllegalArgumentException("No promotion policy found for key: " + name);
+            throw new InvalidPromotionException(ErrorMessages.INVALID_PROMOTION);
         }
         return new Promotion(name, policy);
     }

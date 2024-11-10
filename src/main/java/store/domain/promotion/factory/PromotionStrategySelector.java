@@ -29,7 +29,7 @@ public class PromotionStrategySelector {
     }
 
     public static PromotionStrategy select(CartItem cartItem, PromotionPolicy policy) {
-        if (policy == null||!policy.isValidDate()) {
+        if (policy == null || !policy.isValidDate()) {
             return null;
         }
         if (determineExtraQuantity(cartItem, policy)) {
@@ -44,12 +44,16 @@ public class PromotionStrategySelector {
     }
 
     private static boolean determineExtraQuantity(CartItem cartItem, PromotionPolicy policy) {
-        int availablePromotionQuantity = policy.calculateOptimalPromotionQuantity(cartItem);
+        int availablePromotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
         return availablePromotionQuantity > cartItem.quantity();
     }
 
     private static boolean determineRegularPriceStrategy(CartItem cartItem, PromotionPolicy policy) {
         Inventory inventory = InventoryInitializer.getInstance().getInventory();
         return policy.getApplicableQuantity(cartItem.quantity()) > inventory.getPromotionStockCount(cartItem.name());
+    }
+
+    public static PromotionStrategy get(PromotionStrategyType promotionStrategyType) {
+        return promotionStrategyMap.get(promotionStrategyType);
     }
 }

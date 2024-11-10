@@ -58,6 +58,7 @@ public class PromotionPolicy {
             throw new InvalidPromotionException(ErrorMessages.NEGATIVE_QUANTITY);
         }
     }
+
     public int getApplicableQuantity(int limitedQuantity) {
         return getGiftQuantity(limitedQuantity) * getTotalQuantityRequiredForPromotion();
     }
@@ -66,15 +67,13 @@ public class PromotionPolicy {
         return promotionQuantity >= buyQuantity;
     }
 
-    public int calculateOptimalPromotionQuantity(CartItem cartItem) {
+    public int calculateExtraPromotionQuantity(CartItem cartItem) {
         Inventory inventory = InventoryInitializer.getInstance().getInventory();
-        inventory.getPromotionStockCount(cartItem.name());
-        if(cartItem.quantity() >= cartItem.quantity()){
+        if (cartItem.quantity() >= inventory.getPromotionStockCount(cartItem.name())) {
             return cartItem.quantity();
         }
-        int remainder = buyQuantity % getTotalQuantityRequiredForPromotion();
-        int addition = remainder / getQuantity;
+        int remainder = cartItem.quantity() % getTotalQuantityRequiredForPromotion();
+        int addition = remainder / buyQuantity;
         return cartItem.quantity() + addition;
     }
-
 }
