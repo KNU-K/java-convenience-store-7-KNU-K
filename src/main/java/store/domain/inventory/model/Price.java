@@ -42,4 +42,7 @@ public class Price {
         return new DecimalFormat(NUMBER_FORMAT).format(amount);
     }
 
+    public boolean isBiggerThan(Price of) {
+        return amount > of.amount;
+    }
 }
