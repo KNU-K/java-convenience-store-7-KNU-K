@@ -11,7 +11,7 @@ public class CartItem {
     }
 
     public void increaseQuantity() {
-        quantity += 1;
+        quantity++;
     }
 
     public String name() {

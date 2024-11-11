@@ -35,7 +35,7 @@ public class ConvenienceStoreManager {
                 Order order = orderController.placeOrder(cart);
                 paymentController.doPayment(order);
 
-            } catch (IllegalArgumentException error) {
+            } catch (RuntimeException error) {
                 outputView.displayMessage(error.getMessage());
             } finally {
                 if (!paymentController.askForAdditionalPurchaseAfterPayment()) {

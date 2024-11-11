@@ -22,7 +22,6 @@ public class InventoryInitializer {
     }
 
     public void resetInventory() {
-        // 테스트 후 상태를 초기화
         this.inventory = new Inventory();
     }
 }

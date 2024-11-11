@@ -44,7 +44,7 @@ public class PromotionPolicyTest {
         PromotionPolicy promotionPolicy = new PromotionPolicy(3, 1, startDate, endDate);
 
         // Act & Assert
-        assertTrue(promotionPolicy.isValidDate()); // 오늘이 11월 1일 ~ 30일 사이라면 유효
+        assertTrue(promotionPolicy.isValidDate());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class PromotionPolicyTest {
         PromotionPolicy promotionPolicy = new PromotionPolicy(3, 1, startDate, endDate);
 
         // Act & Assert
-        assertFalse(promotionPolicy.isValidDate()); // 오늘이 11월 6일이라면 유효하지 않음
+        assertFalse(promotionPolicy.isValidDate());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class PromotionPolicyTest {
         PromotionPolicy promotionPolicy = new PromotionPolicy(buyQuantity, getQuantity, startDate, endDate);
 
         // Act & Assert
-        assertEquals(4, promotionPolicy.getTotalQuantityRequiredForPromotion());  // 3 + 1 = 4
+        assertEquals(4, promotionPolicy.getTotalQuantityRequiredForPromotion());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PromotionPolicyTest {
         PromotionPolicy promotionPolicy = new PromotionPolicy(3, 1, startDate, endDate);
 
         // Act & Assert
-        assertEquals(2, promotionPolicy.getGiftQuantity(8)); // 8개 구매 시 증정품 2개
+        assertEquals(2, promotionPolicy.getGiftQuantity(8));
     }
 
     @Test
@@ -88,10 +88,9 @@ public class PromotionPolicyTest {
         LocalDate startDate = LocalDate.of(2024, 11, 1);
         LocalDate endDate = LocalDate.of(2024, 11, 30);
         PromotionPolicy promotionPolicy = new PromotionPolicy(3, 1, startDate, endDate);
-
         // Act & Assert
-        assertTrue(promotionPolicy.isEligibleForExtraItem(7));  // 7개 구매 시 프로모션에 적합
-        assertFalse(promotionPolicy.isEligibleForExtraItem(8)); // 8개 구매 시 프로모션에 적합하지 않음
+        assertTrue(promotionPolicy.isEligibleForExtraItem(7));
+        assertFalse(promotionPolicy.isEligibleForExtraItem(8));
     }
 
     @Test
@@ -102,8 +101,7 @@ public class PromotionPolicyTest {
         PromotionPolicy promotionPolicy = new PromotionPolicy(3, 1, startDate, endDate);
 
         // Act & Assert
-        assertThrows(InvalidPromotionException.class, () -> promotionPolicy.getGiftQuantity(-1)  // 음수 수량은 유효하지 않음
-        );
+        assertThrows(InvalidPromotionException.class, () -> promotionPolicy.getGiftQuantity(-1));
     }
 
     @Test
@@ -114,7 +112,7 @@ public class PromotionPolicyTest {
         PromotionPolicy promotionPolicy = new PromotionPolicy(3, 1, startDate, endDate);
 
         // Act & Assert
-        assertTrue(promotionPolicy.isValidPromotionQuantity(3));  // 최소 구매 수량이 3 이상이면 유효
-        assertFalse(promotionPolicy.isValidPromotionQuantity(2)); // 2는 유효하지 않음
+        assertTrue(promotionPolicy.isValidPromotionQuantity(3));
+        assertFalse(promotionPolicy.isValidPromotionQuantity(2));
     }
 }

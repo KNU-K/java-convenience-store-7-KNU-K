@@ -17,9 +17,9 @@ public class MockPaymentService extends PaymentService {
     @Override
     public Payment processPayment(Order order, boolean isMembership) {
         processPaymentCalled = true;
-        new Order(Collections.singletonList(OrderFactory.createOrderItem(new CartItem("콜라", 3), Price.of(3000), 0, null)), Price.of(3000)); // 필요한 필드 초기화
+        new Order(Collections.singletonList(OrderFactory.createOrderItem(new CartItem("콜라", 3), Price.of(3000), 0, null)), Price.of(3000));
 
-        return new Payment(List.of(new PaymentItem("콜라", 3, 0, Price.of(3000), Price.ZERO)), Price.of(3000), Price.ZERO, Price.ZERO); // 필요한 필드 초기화
+        return new Payment(List.of(new PaymentItem("콜라", 3, 0, Price.of(3000), Price.ZERO)), Price.of(3000), Price.ZERO, Price.ZERO);
     }
 
     public boolean isProcessPaymentCalled() {

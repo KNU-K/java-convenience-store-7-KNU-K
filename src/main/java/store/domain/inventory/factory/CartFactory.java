@@ -1,6 +1,6 @@
 package store.domain.inventory.factory;
 
-import store.common.exception.ErrorMessages;
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidFormatException;
 import store.common.exception.InvalidInventoryException;
 import store.common.initializer.InventoryInitializer;
@@ -39,8 +39,9 @@ public class CartFactory {
 
     private static void validateExistProduct(String productName) {
         Inventory inventory = InventoryInitializer.getInstance().getInventory();
-        if (!inventory.isExistProduct(productName))
+        if (!inventory.isExistProduct(productName)) {
             throw new InvalidInventoryException(ErrorMessages.NON_EXISTENT_PRODUCT);
+        }
     }
 
     private static String[] cleanAndSplitInput(String input) {

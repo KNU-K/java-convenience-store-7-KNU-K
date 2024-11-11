@@ -54,9 +54,8 @@ public class OrderService {
 
     private OrderItem applyExtraPromotion(CartItem cartItem, Price price, PromotionPolicy policy, PromotionStrategy strategy) {
         int promotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
-
         if (!promotionCallback.confirmExtraPromotion(cartItem)) {
-            return createOrderItem(cartItem, price, promotionQuantity - 1, policy);
+            return createOrderItem(cartItem, price, promotionQuantity - policy.getGetQuantity(), policy);
         }
         strategy.apply(cartItem, policy);
 

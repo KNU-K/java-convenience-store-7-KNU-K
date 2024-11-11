@@ -17,7 +17,7 @@ public class MockInventoryService extends InventoryService {
 
     @Override
     public Price getProductPrice(String name) {
-        return new Price(100);  // 각 상품의 가격을 100으로 설정
+        return new Price(100);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class MockInventoryService extends InventoryService {
 
     @Override
     public Price getTotalPriceOfEachItem(OrderItem orderItem) {
-        return Price.of(orderItem.quantity() * COKE_PRICE);  // 수량에 따른 총 가격 계산
+        return Price.of(orderItem.quantity() * COKE_PRICE);
     }
 
     public void setInventoryStatus(String expectedInventoryStatus) {

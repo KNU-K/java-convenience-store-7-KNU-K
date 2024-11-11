@@ -1,6 +1,6 @@
 package store.domain.promotion.model;
 
-import store.common.exception.ErrorMessages;
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidPromotionException;
 import store.common.initializer.InventoryInitializer;
 import store.common.utility.DateTimeGenerator;
@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class PromotionPolicy {
 
     private static final int MIN_QUANTITY = 0;
+
     private final int buyQuantity;
     private final int getQuantity;
     private final LocalDate startDate;
@@ -53,12 +54,6 @@ public class PromotionPolicy {
         return (quantity % getTotalQuantityRequiredForPromotion()) == buyQuantity;
     }
 
-    private void validateQuantity(int quantity) {
-        if (quantity < MIN_QUANTITY) {
-            throw new InvalidPromotionException(ErrorMessages.NEGATIVE_QUANTITY);
-        }
-    }
-
     public int getApplicableQuantity(int limitedQuantity) {
         return getGiftQuantity(limitedQuantity) * getTotalQuantityRequiredForPromotion();
     }
@@ -75,5 +70,15 @@ public class PromotionPolicy {
         int remainder = cartItem.quantity() % getTotalQuantityRequiredForPromotion();
         int addition = remainder / buyQuantity;
         return cartItem.quantity() + addition;
+    }
+
+    public int getGetQuantity() {
+        return getQuantity;
+    }
+
+    private void validateQuantity(int quantity) {
+        if (quantity < MIN_QUANTITY) {
+            throw new InvalidPromotionException(ErrorMessages.NEGATIVE_QUANTITY);
+        }
     }
 }

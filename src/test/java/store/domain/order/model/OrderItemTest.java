@@ -19,9 +19,9 @@ class OrderItemTest {
 
     @BeforeEach
     void setUp() {
-        cartItem = new CartItem("Test Item", 5); // CartItem에 name과 quantity가 있다고 가정
-        price = new Price(100); // Price에 금액을 나타내는 정수 값을 전달한다고 가정
-        promotionPolicy = new PromotionPolicy(2, 1, LocalDate.of(2024, 11, 7), LocalDate.of(2024, 12, 25)); // PromotionPolicy 설정 예시
+        cartItem = new CartItem("Test Item", 5);
+        price = new Price(100);
+        promotionPolicy = new PromotionPolicy(2, 1, LocalDate.of(2024, 11, 7), LocalDate.of(2024, 12, 25));
         promotionQuantity = 2;
     }
 

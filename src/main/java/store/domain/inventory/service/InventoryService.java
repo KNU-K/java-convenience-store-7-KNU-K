@@ -1,6 +1,6 @@
 package store.domain.inventory.service;
 
-import store.common.exception.ErrorMessages;
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidInventoryException;
 import store.domain.inventory.model.*;
 import store.domain.order.model.Order;

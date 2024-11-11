@@ -1,7 +1,17 @@
 package store.common.constants;
 
-public class FileConstants {
-    public static final String PROMOTIONS_FILE_PATH = "promotions.md";
-    public static final String PRODUCTS_FILE_PATH = "products.md";
+public enum FileConstants {
+    PROMOTIONS_FILE_PATH("promotions.md"),
+    PRODUCTS_FILE_PATH("products.md");
+    private final String type;
+
+    FileConstants(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
 }
 

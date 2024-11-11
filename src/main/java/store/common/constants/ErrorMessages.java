@@ -1,4 +1,4 @@
-package store.common.exception;
+package store.common.constants;
 
 public enum ErrorMessages {
     // 파일 관련 오류

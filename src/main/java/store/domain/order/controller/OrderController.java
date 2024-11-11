@@ -14,6 +14,7 @@ import store.domain.order.service.PromotionConfirmCallback;
 import java.util.List;
 
 public class OrderController extends BaseController implements PromotionConfirmCallback {
+
     private final OrderService orderService;
 
     public OrderController(InputView inputView, OutputView outputView, OrderService orderService) {
@@ -42,5 +43,4 @@ public class OrderController extends BaseController implements PromotionConfirmC
     public boolean confirmRegularPriceOption(CartItem cartItem, int remainingQuantity) {
         return inputView.confirmRegularPriceOption(cartItem.name(), remainingQuantity);
     }
-
 }

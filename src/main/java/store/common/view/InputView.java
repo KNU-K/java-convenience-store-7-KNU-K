@@ -1,7 +1,7 @@
 package store.common.view;
 
 import camp.nextstep.edu.missionutils.Console;
-import store.common.exception.ErrorMessages;
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidFormatException;
 import store.common.handler.InputRetryHandler;
 import store.domain.inventory.factory.CartFactory;

@@ -2,7 +2,8 @@ package store.domain.promotion.factory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import store.common.exception.ErrorMessages;
+
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidPromotionException;
 import store.domain.promotion.model.Promotion;
 import store.domain.promotion.model.PromotionPolicy;

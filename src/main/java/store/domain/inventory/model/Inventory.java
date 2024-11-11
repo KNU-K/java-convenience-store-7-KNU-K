@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 public class Inventory {
 
     private static final int INIT_SEQUENCE_ID = 1;
+    private static final int NOTHING = 0;
 
     private final Map<Integer, Stock> stocks = new HashMap<>();
     private final Map<Integer, PromotionStock> promotionStocks = new HashMap<>();
@@ -31,12 +32,12 @@ public class Inventory {
                 .filter(stock -> stock.getProduct().name().equals(name))
                 .mapToInt(Stock::getQuantity)
                 .findFirst()
-                .orElse(0);
+                .orElse(NOTHING);
     }
 
     public int getApplicableQuantity(CartItem cartItem, PromotionPolicy policy) {
         if (policy == null) {
-            return 0;
+            return NOTHING;
         }
         int totalQuantity = getPromotionStockCount(cartItem.name());
         if (totalQuantity < cartItem.quantity()) {
@@ -57,7 +58,9 @@ public class Inventory {
     }
 
     public void decreaseStock(String name, int quantity) {
-        if (quantity == 0) return;
+        if (quantity == NOTHING) {
+            return;
+        }
 
         Optional<PromotionStock> promotionStockOpt = promotionStocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
@@ -75,7 +78,9 @@ public class Inventory {
     }
 
     private void decreaseStockOnly(String name, int quantity) {
-        if (quantity == 0) return;
+        if (quantity == NOTHING) {
+            return;
+        }
         stocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
                 .findFirst()
@@ -83,7 +88,9 @@ public class Inventory {
     }
 
     public void decreasePromotionStock(String name, int quantity) {
-        if (quantity == 0) return;
+        if (quantity == NOTHING) {
+            return;
+        }
         promotionStocks.values().stream()
                 .filter(existingStock -> existingStock.getProduct().name().equals(name))
                 .findFirst()
@@ -118,12 +125,12 @@ public class Inventory {
         StringBuilder result = new StringBuilder();
         int currentSize = stocks.size() + promotionStocks.size();
 
-        for (int i = 1; i <= currentSize; i++) {
-            if (promotionStocks.containsKey(i)) {
-                result.append(promotionStocks.get(i));
+        for (int currentSequenceNumber = INIT_SEQUENCE_ID; currentSequenceNumber <= currentSize; currentSequenceNumber++) {
+            if (promotionStocks.containsKey(currentSequenceNumber)) {
+                result.append(promotionStocks.get(currentSequenceNumber));
             }
-            if (stocks.containsKey(i)) {
-                result.append(stocks.get(i));
+            if (stocks.containsKey(currentSequenceNumber)) {
+                result.append(stocks.get(currentSequenceNumber));
             }
             result.append(System.lineSeparator());
         }

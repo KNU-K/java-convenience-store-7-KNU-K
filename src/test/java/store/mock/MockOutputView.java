@@ -27,6 +27,6 @@ public class MockOutputView extends OutputView {
     }
 
     public String getDisplayedInventoryStatus() {
-        return inventoryStatus;  // inventoryStatus 값을 반환
+        return inventoryStatus;
     }
 }

@@ -3,7 +3,7 @@ package store;
 import camp.nextstep.edu.missionutils.test.NsTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import store.common.exception.ErrorMessages;
+import store.common.constants.ErrorMessages;
 import store.common.initializer.InventoryInitializer;
 import store.extension.annotation.FixedDateTime;
 

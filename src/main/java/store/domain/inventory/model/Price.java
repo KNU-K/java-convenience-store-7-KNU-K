@@ -18,6 +18,26 @@ public class Price {
         return new Price(amount);
     }
 
+    public Price multiply(int quantity) {
+        return new Price(amount * quantity);
+    }
+
+    public Price applyPercentage(int percentage) {
+        return Price.of((int) (amount * (percentage / 100.0)));
+    }
+
+    public Price plus(Price other) {
+        return Price.of(this.amount + other.amount);
+    }
+
+    public Price subtract(Price other) {
+        return Price.of(this.amount - other.amount);
+    }
+
+    public boolean isBiggerThan(Price other) {
+        return amount > other.amount;
+    }
+
     @Override
     public String toString() {
         return formatAmount(amount);
@@ -36,27 +56,7 @@ public class Price {
         return Objects.hash(amount);
     }
 
-    public Price multiply(int quantity) {
-        return new Price(amount * quantity);
-    }
-
-    public Price applyPercentage(int percentage) {
-        return Price.of((int) (amount * (percentage / 100.0)));
-    }
-
-    public Price plus(Price other) {
-        return Price.of(this.amount + other.amount);
-    }
-
-    public Price subtract(Price other) {
-        return Price.of(this.amount - other.amount);
-    }
-
     private String formatAmount(int amount) {
         return new DecimalFormat(NUMBER_FORMAT).format(amount);
-    }
-
-    public boolean isBiggerThan(Price of) {
-        return amount > of.amount;
     }
 }

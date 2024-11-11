@@ -1,7 +1,7 @@
 package store.common.utility;
 
 import store.Application;
-import store.common.exception.ErrorMessages;
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidFileException;
 
 import java.io.BufferedReader;

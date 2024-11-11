@@ -1,14 +1,17 @@
 package store.domain.inventory.model;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import store.domain.promotion.model.Promotion;
 import store.domain.promotion.model.PromotionPolicy;
 import store.extension.annotation.FixedDateTime;
 
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InventoryTest {
 

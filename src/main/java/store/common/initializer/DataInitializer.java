@@ -16,10 +16,10 @@ public class DataInitializer {
     private final InventoryProcessor inventoryProcessor = new InventoryProcessor(inventory, promotionFactory);
 
     public void initializeData() {
-        List<String[]> promotionsData = FileReader.readMarkdownFile(FileConstants.PROMOTIONS_FILE_PATH);
+        List<String[]> promotionsData = FileReader.readMarkdownFile(FileConstants.PROMOTIONS_FILE_PATH.getType());
         promotionsData.forEach(promotionProcessor::processPromotionDetails);
 
-        List<String[]> productsData = FileReader.readMarkdownFile(FileConstants.PRODUCTS_FILE_PATH);
+        List<String[]> productsData = FileReader.readMarkdownFile(FileConstants.PRODUCTS_FILE_PATH.getType());
         productsData.forEach(inventoryProcessor::processStockItem);
     }
 

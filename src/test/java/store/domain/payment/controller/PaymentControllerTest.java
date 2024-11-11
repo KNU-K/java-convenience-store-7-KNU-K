@@ -2,10 +2,12 @@ package store.domain.payment.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import store.domain.inventory.model.CartItem;
 import store.domain.inventory.model.Price;
 import store.domain.order.factory.OrderFactory;
 import store.domain.order.model.Order;
+
 import store.mock.MockInputView;
 import store.mock.MockInventoryService;
 import store.mock.MockOutputView;
@@ -34,7 +36,7 @@ class PaymentControllerTest {
     @Test
     void 결제_성공시_재고감소와_영수증출력() {
         // Given
-        Order order = new Order(Collections.singletonList(OrderFactory.createOrderItem(new CartItem("콜라", 3), Price.of(3000), 0, null)), Price.of(3000)); // 필요한 필드 초기화
+        Order order = new Order(Collections.singletonList(OrderFactory.createOrderItem(new CartItem("콜라", 3), Price.of(3000), 0, null)), Price.of(3000));
         inputView.setMembership(true);
 
         // When

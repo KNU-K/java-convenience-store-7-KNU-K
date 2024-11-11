@@ -1,9 +1,11 @@
 package store.domain.inventory.service;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import store.common.exception.ErrorMessages;
+
+import store.common.constants.ErrorMessages;
 import store.common.exception.InvalidInventoryException;
 import store.common.initializer.InventoryInitializer;
 import store.domain.inventory.model.CartItem;
@@ -14,10 +16,10 @@ import store.domain.promotion.model.PromotionPolicy;
 import store.extension.DataExtension;
 import store.extension.InventoryExtension;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(InventoryExtension.class)
 @ExtendWith(DataExtension.class)
@@ -71,7 +73,7 @@ class InventoryServiceTest {
     void 재고가_충분한_경우() {
         // When & Then
         assertDoesNotThrow(() -> {
-            inventoryService.checkSufficientQuantity("콜라", 5); // 5개는 충분함
+            inventoryService.checkSufficientQuantity("콜라", 5);
         });
     }
 
@@ -99,7 +101,7 @@ class InventoryServiceTest {
     void 프로모션_적용_수량_계산() {
         // Given
         CartItem cartItem = new CartItem("콜라", 20);
-        PromotionPolicy promotionPolicy = new PromotionPolicy(2, 1, LocalDate.of(2024, 11, 7), LocalDate.of(2024, 12, 25)); // 프로모션 정책: 5개까지 적용
+        PromotionPolicy promotionPolicy = new PromotionPolicy(2, 1, LocalDate.of(2024, 11, 7), LocalDate.of(2024, 12, 25));
 
         // When
         int applicableQuantity = inventoryService.getApplicableQuantity(cartItem, promotionPolicy);
