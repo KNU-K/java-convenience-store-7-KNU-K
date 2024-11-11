@@ -30,10 +30,10 @@ public class OrderService {
         PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
 
         if (isValidPromotion(policy, strategy) && isExtraQuantityPromotion(strategy)) {
-            return applyExtraPromotion(cartItem, price, policy);
+            return applyExtraPromotion(cartItem, price, policy, strategy);
         }
         if (isValidPromotion(policy, strategy) && isRegularPricePromotion(strategy)) {
-            return applyRegularPromotion(cartItem, price, policy);
+            return applyRegularPromotion(cartItem, price, policy, strategy);
         }
         if (policy != null && policy.isValidDate()) {
             checkSufficientQuantity(cartItem.name(), cartItem.quantity());
@@ -43,39 +43,28 @@ public class OrderService {
     }
 
     public Price calculateTotalCartPrice(List<OrderItem> orderItems) {
-        return orderItems.stream()
-                .map(inventoryService::getTotalPriceOfEachItem)
-                .reduce(Price.ZERO, Price::plus);
+        return orderItems.stream().map(inventoryService::getTotalPriceOfEachItem).reduce(Price.ZERO, Price::plus);
     }
 
     public PromotionPolicy getPromotionPolicy(CartItem cartItem) {
         return promotionService.getPromotionPolicy(cartItem);
     }
 
-    private OrderItem applyExtraPromotion(CartItem cartItem, Price price, PromotionPolicy policy) {
+    private OrderItem applyExtraPromotion(CartItem cartItem, Price price, PromotionPolicy policy, PromotionStrategy strategy) {
         int promotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
-
         if (promotionCallback.confirmExtraPromotion(cartItem)) {
-            applyPromotionStrategy(cartItem, policy);
+            strategy.apply(cartItem, policy);
         }
-
         return createOrderItem(cartItem, price, promotionQuantity, policy);
     }
 
-    private OrderItem applyRegularPromotion(CartItem cartItem, Price price, PromotionPolicy policy) {
+    private OrderItem applyRegularPromotion(CartItem cartItem, Price price, PromotionPolicy policy, PromotionStrategy strategy) {
         int applicableQuantity = getApplicableQuantity(cartItem);
         int remainingQuantity = getRemainingQuantity(cartItem);
-
         if (!promotionCallback.confirmRegularPriceOption(cartItem, remainingQuantity)) {
-            applyPromotionStrategy(cartItem, policy);
+            strategy.apply(cartItem, policy);
         }
-
         return createOrderItem(cartItem, price, applicableQuantity, policy);
-    }
-
-    private void applyPromotionStrategy(CartItem cartItem, PromotionPolicy policy) {
-        PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
-        strategy.apply(cartItem, policy);
     }
 
     private OrderItem createOrderItem(CartItem cartItem, Price price, int promotionQuantity, PromotionPolicy promotionPolicy) {
