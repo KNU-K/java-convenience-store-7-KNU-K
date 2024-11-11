@@ -15,8 +15,8 @@ public class ReceiptConstants {
     public static final String FINAL_PRICE_LABEL = "내실돈";
     public static final String ITEM_FORMAT = "%-15s%-10d%-10s";
     public static final String GIFT_FORMAT = "%-15s%-10d";
-    public static final String DISCOUNT_FORMAT = "%-25s%-10s-%-10s";
-    public static final String TOTAL_AMOUNT_FORMAT = "%-25s%-10s%-10s";
-    public static final String FINAL_PRICE_FORMAT = "%-25s%-10s%-10s";
+    public static final String DISCOUNT_FORMAT = "%-15s%-10s-%-10s";
+    public static final String TOTAL_AMOUNT_FORMAT = "%-15s%-10s%-10s";
+    public static final String FINAL_PRICE_FORMAT = "%-15s%-10s%-10s";
 
 }
