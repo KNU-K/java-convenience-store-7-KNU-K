@@ -10,12 +10,11 @@ import store.domain.promotion.model.PromotionPolicy;
 import java.time.LocalDate;
 
 public class InventoryExtension implements BeforeEachCallback {
+    private static final LocalDate FIXED_DATE = LocalDate.of(2024, 11, 11);
     private Product product1;
     private Product product2;
     private Stock stock;
     private Inventory inventory;
-
-    private static final LocalDate FIXED_DATE = LocalDate.of(2024, 11, 11);
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {

@@ -20,8 +20,8 @@ class OrderTest {
     @BeforeEach
     void setUp() {
         totalPrice = new Price(5000);
-        orderItem1 = new OrderItem("상품1",   Price.of(2000), 4,2, null);
-        orderItem2 = new OrderItem("상품2", Price.of(1000),  5,3,null);
+        orderItem1 = new OrderItem("상품1", Price.of(2000), 4, 2, null);
+        orderItem2 = new OrderItem("상품2", Price.of(1000), 5, 3, null);
         List<OrderItem> orderItems = Arrays.asList(orderItem1, orderItem2);
         order = new Order(orderItems, totalPrice);
     }

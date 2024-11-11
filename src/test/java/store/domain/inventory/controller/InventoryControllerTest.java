@@ -3,15 +3,16 @@ package store.domain.inventory.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import store.extension.DataExtension;
 import store.common.initializer.InventoryInitializer;
 import store.domain.inventory.model.Cart;
+import store.extension.DataExtension;
 import store.mock.MockInputView;
 import store.mock.MockInventoryService;
 import store.mock.MockOutputView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @ExtendWith(DataExtension.class)
 class InventoryControllerTest {
     private InventoryController inventoryController;

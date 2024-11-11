@@ -11,7 +11,6 @@ import store.mock.MockInventoryService;
 import store.mock.MockOutputView;
 import store.mock.MockPaymentService;
 
-
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -3,13 +3,13 @@ package store.domain.promotion.factory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import store.extension.InventoryExtension;
 import store.domain.inventory.model.CartItem;
 import store.domain.promotion.model.PromotionPolicy;
+import store.domain.promotion.strategy.ExtraQuantityStrategy;
 import store.domain.promotion.strategy.PromotionStrategy;
 import store.domain.promotion.strategy.PromotionStrategyType;
 import store.domain.promotion.strategy.RegularPriceStrategy;
-import store.domain.promotion.strategy.ExtraQuantityStrategy;
+import store.extension.InventoryExtension;
 
 import java.time.LocalDate;
 

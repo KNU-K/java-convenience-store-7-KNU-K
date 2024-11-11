@@ -1,6 +1,5 @@
 package store.domain.promotion.model;
 
-import camp.nextstep.edu.missionutils.DateTimes;
 import store.common.exception.ErrorMessages;
 import store.common.exception.InvalidPromotionException;
 import store.common.initializer.InventoryInitializer;

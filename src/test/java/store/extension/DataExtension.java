@@ -7,7 +7,7 @@ import store.common.initializer.DataInitializer;
 public class DataExtension implements BeforeEachCallback {
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        DataInitializer dataInitializer= new DataInitializer();
+        DataInitializer dataInitializer = new DataInitializer();
         dataInitializer.initializeData();
     }
 }

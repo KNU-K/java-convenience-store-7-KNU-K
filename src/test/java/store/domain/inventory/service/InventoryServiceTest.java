@@ -1,16 +1,18 @@
 package store.domain.inventory.service;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import store.extension.DataExtension;
-import store.extension.InventoryExtension;
-import store.common.exception.ErrorMessages;
-import store.common.initializer.InventoryInitializer;
-import store.domain.inventory.model.*;
-import store.domain.order.model.OrderItem;
-import store.domain.promotion.model.PromotionPolicy;
-import store.common.exception.InvalidInventoryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import store.common.exception.ErrorMessages;
+import store.common.exception.InvalidInventoryException;
+import store.common.initializer.InventoryInitializer;
+import store.domain.inventory.model.CartItem;
+import store.domain.inventory.model.Inventory;
+import store.domain.inventory.model.Price;
+import store.domain.order.model.OrderItem;
+import store.domain.promotion.model.PromotionPolicy;
+import store.extension.DataExtension;
+import store.extension.InventoryExtension;
 
 import java.time.LocalDate;
 
@@ -60,7 +62,8 @@ class InventoryServiceTest {
     void 재고가_부족할_경우_예외발생() {
         // When & Then
         InvalidInventoryException exception = assertThrows(InvalidInventoryException.class, () -> {
-            inventoryService.checkSufficientQuantity("콜라", 30);});
+            inventoryService.checkSufficientQuantity("콜라", 30);
+        });
         assertEquals(ErrorMessages.EXCEEDS_STOCK.getMessage(), exception.getMessage());
     }
 
@@ -84,7 +87,7 @@ class InventoryServiceTest {
     @Test
     void 상품_주문_가격_계산() {
         // Given
-        OrderItem orderItem = new OrderItem(new CartItem("콜라",3),Price.of(1000),0,null);
+        OrderItem orderItem = new OrderItem(new CartItem("콜라", 3), Price.of(1000), 0, null);
         // When
         Price totalPrice = inventoryService.getTotalPriceOfEachItem(orderItem);
 
@@ -96,7 +99,7 @@ class InventoryServiceTest {
     void 프로모션_적용_수량_계산() {
         // Given
         CartItem cartItem = new CartItem("콜라", 20);
-        PromotionPolicy promotionPolicy = new PromotionPolicy(2,1, LocalDate.of(2024,11,7), LocalDate.of(2024,12,25)); // 프로모션 정책: 5개까지 적용
+        PromotionPolicy promotionPolicy = new PromotionPolicy(2, 1, LocalDate.of(2024, 11, 7), LocalDate.of(2024, 12, 25)); // 프로모션 정책: 5개까지 적용
 
         // When
         int applicableQuantity = inventoryService.getApplicableQuantity(cartItem, promotionPolicy);

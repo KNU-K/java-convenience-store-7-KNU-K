@@ -49,7 +49,7 @@ public class CartFactory {
     }
 
     private static String[] splitItemGroup(String itemGroup) {
-            return itemGroup.split(ITEM_SEPARATOR);
+        return itemGroup.split(ITEM_SEPARATOR);
     }
 
     private static void processItemData(String[] itemDataArray, Cart cart) {

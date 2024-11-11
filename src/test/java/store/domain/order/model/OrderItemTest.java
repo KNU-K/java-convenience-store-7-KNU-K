@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import store.domain.inventory.model.CartItem;
 import store.domain.inventory.model.Price;
 import store.domain.promotion.model.PromotionPolicy;
-import store.domain.order.model.OrderItem;
 
 import java.time.LocalDate;
 
@@ -22,7 +21,7 @@ class OrderItemTest {
     void setUp() {
         cartItem = new CartItem("Test Item", 5); // CartItem에 name과 quantity가 있다고 가정
         price = new Price(100); // Price에 금액을 나타내는 정수 값을 전달한다고 가정
-        promotionPolicy = new PromotionPolicy(2,1, LocalDate.of(2024,11,7),LocalDate.of(2024,12,25)); // PromotionPolicy 설정 예시
+        promotionPolicy = new PromotionPolicy(2, 1, LocalDate.of(2024, 11, 7), LocalDate.of(2024, 12, 25)); // PromotionPolicy 설정 예시
         promotionQuantity = 2;
     }
 

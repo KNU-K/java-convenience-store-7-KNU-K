@@ -30,10 +30,10 @@ public class OrderService {
         PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
 
         if (isValidPromotion(policy, strategy) && isExtraQuantityPromotion(strategy)) {
-            return applyExtraPromotion(cartItem, price, policy,strategy);
+            return applyExtraPromotion(cartItem, price, policy, strategy);
         }
         if (isValidPromotion(policy, strategy) && isRegularPricePromotion(strategy)) {
-            return applyRegularPromotion(cartItem, price, policy,strategy);
+            return applyRegularPromotion(cartItem, price, policy, strategy);
         }
         if (policy != null && policy.isValidDate()) {
             checkSufficientQuantity(cartItem.name(), cartItem.quantity());
@@ -56,7 +56,7 @@ public class OrderService {
         int promotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
 
         if (!promotionCallback.confirmExtraPromotion(cartItem)) {
-            return createOrderItem(cartItem, price, promotionQuantity-1, policy);
+            return createOrderItem(cartItem, price, promotionQuantity - 1, policy);
         }
         strategy.apply(cartItem, policy);
 

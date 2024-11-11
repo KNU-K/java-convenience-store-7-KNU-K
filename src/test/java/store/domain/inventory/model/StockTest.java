@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class StockTest {
 
@@ -35,8 +35,8 @@ class StockTest {
         Stock stock = new Stock(product, 10);
 
         // Act & Assert
-        assertEquals(true, stock.isProductNameEqual("테스트 제품"));
-        assertEquals(false, stock.isProductNameEqual("다른 제품"));
+        assertTrue(stock.isProductNameEqual("테스트 제품"));
+        assertFalse(stock.isProductNameEqual("다른 제품"));
     }
 
     @Test

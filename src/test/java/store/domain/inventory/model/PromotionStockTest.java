@@ -19,6 +19,14 @@ class PromotionStockTest {
     private Promotion promotion;
     private PromotionStock promotionStock;
 
+    static Stream<Arguments> provideQuantityForValidPromotion() {
+        return Stream.of(
+                Arguments.of(5, true),
+                Arguments.of(15, true),
+                Arguments.of(2, true)
+        );
+    }
+
     @BeforeEach
     void setUp() {
         product = new Product("Product A", new Price(10000));
@@ -43,7 +51,7 @@ class PromotionStockTest {
 
     @Test
     void 프로모션_정보_출력() {
-        String expectedString = "- "+product.toString() + " 10개 Winter Sale";
+        String expectedString = "- " + product.toString() + " 10개 Winter Sale";
         assertEquals(expectedString, promotionStock.toString());
     }
 
@@ -52,14 +60,6 @@ class PromotionStockTest {
     void 주어진_수량에_대해_프로모션이_유효한지_확인한다(int quantity, boolean expectedValidity) {
         PromotionStock stock = new PromotionStock(product, quantity, promotion);
         assertEquals(expectedValidity, stock.isValidPromotionDate());
-    }
-
-    static Stream<Arguments> provideQuantityForValidPromotion() {
-        return Stream.of(
-                Arguments.of(5, true),
-                Arguments.of(15, true),
-                Arguments.of(2, true)
-        );
     }
 
     @Test

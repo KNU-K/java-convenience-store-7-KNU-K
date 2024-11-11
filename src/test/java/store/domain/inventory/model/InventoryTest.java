@@ -11,14 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryTest {
 
+    private static final LocalDate FIXED_DATE = LocalDate.of(2024, 11, 11);
     private Inventory inventory;
     private Product product;
     private Stock stock;
     private Promotion promotion;
     private PromotionStock promotionStock;
     private PromotionPolicy promotionPolicy;
-
-    private static final LocalDate FIXED_DATE = LocalDate.of(2024, 11, 11);
 
     @BeforeEach
     void setUp() {
@@ -43,6 +42,7 @@ class InventoryTest {
 
         assertEquals(15, inventory.streamStock().findFirst().get().getQuantity());
     }
+
     @Test
     void 프로모션_재고_차감() {
         inventory.addPromotionStock(promotionStock);

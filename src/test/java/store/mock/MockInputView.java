@@ -5,7 +5,7 @@ import store.common.view.InputView;
 import store.domain.inventory.factory.CartFactory;
 import store.domain.inventory.model.Cart;
 
-public class MockInputView  extends InputView {
+public class MockInputView extends InputView {
     private boolean membership;
     private boolean continueShopping;
     private String expectedInput;
@@ -17,6 +17,10 @@ public class MockInputView  extends InputView {
     @Override
     public Cart getProductNameAndQuantity() {
         return CartFactory.createCartFromInput(expectedInput);
+    }
+
+    public void setProductNameAndQuantity(String expectedInput) {
+        this.expectedInput = expectedInput;
     }
 
     public void setMembership(boolean membership) {
@@ -35,10 +39,6 @@ public class MockInputView  extends InputView {
     @Override
     public boolean getContinueShoppingConfirmation() {
         return continueShopping;
-    }
-
-    public void setProductNameAndQuantity(String expectedInput) {
-        this.expectedInput = expectedInput;
     }
 
 }

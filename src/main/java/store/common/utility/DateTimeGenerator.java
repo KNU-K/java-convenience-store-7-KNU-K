@@ -8,6 +8,7 @@ public class DateTimeGenerator {
     private static DateTimeGenerator instance;
     private boolean isFixedClockEnabled = false;
     private LocalDate fixedDate;
+
     private DateTimeGenerator() {
     }
 
@@ -21,11 +22,12 @@ public class DateTimeGenerator {
 
     // 예시로 날짜를 반환하는 메서드
     public LocalDate now() {
-        if(isFixedClockEnabled) {
+        if (isFixedClockEnabled) {
             return fixedDate;
         }
         return DateTimes.now().toLocalDate();
     }
+
     public void enableFixedClockMode(LocalDate fixedDate) {
         this.fixedDate = fixedDate;
         this.isFixedClockEnabled = true;

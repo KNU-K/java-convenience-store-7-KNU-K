@@ -32,7 +32,7 @@ public class MockInventoryService extends InventoryService {
 
     @Override
     public Price getTotalPriceOfEachItem(OrderItem orderItem) {
-        return Price.of(orderItem.quantity() * COKE_PRICE );  // 수량에 따른 총 가격 계산
+        return Price.of(orderItem.quantity() * COKE_PRICE);  // 수량에 따른 총 가격 계산
     }
 
     public void setInventoryStatus(String expectedInventoryStatus) {
