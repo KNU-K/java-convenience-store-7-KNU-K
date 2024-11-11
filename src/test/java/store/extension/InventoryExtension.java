@@ -1,4 +1,4 @@
-package store.common.config.initializer;
+package store.extension;
 
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;

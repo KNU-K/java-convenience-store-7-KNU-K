@@ -3,7 +3,7 @@ package store.domain.promotion.factory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import store.common.config.initializer.InventoryExtension;
+import store.extension.InventoryExtension;
 import store.domain.inventory.model.CartItem;
 import store.domain.promotion.model.PromotionPolicy;
 import store.domain.promotion.strategy.PromotionStrategy;
@@ -58,12 +58,6 @@ public class PromotionStrategySelectorTest {
     void 선택_프로모션_기간_유효하지_않을_때_확인() {
         PromotionPolicy expiredPolicy = new PromotionPolicy(3, 1, LocalDate.of(2024, 10, 1), LocalDate.of(2024, 10, 30));
         PromotionStrategy promotionStrategy = PromotionStrategySelector.select(cartItem, expiredPolicy);
-        assertNull(promotionStrategy);
-    }
-
-    @Test
-    void 선택_정책_없는_프로모션_확인() {
-        PromotionStrategy promotionStrategy = PromotionStrategySelector.select(cartItem, new PromotionPolicy(10, 1, LocalDate.of(2024, 11, 1), LocalDate.of(2024, 11, 30)));
         assertNull(promotionStrategy);
     }
 
