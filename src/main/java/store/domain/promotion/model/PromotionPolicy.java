@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.DateTimes;
 import store.common.exception.ErrorMessages;
 import store.common.exception.InvalidPromotionException;
 import store.common.initializer.InventoryInitializer;
+import store.common.utility.DateTimeGenerator;
 import store.domain.inventory.model.CartItem;
 import store.domain.inventory.model.Inventory;
 
@@ -35,7 +36,7 @@ public class PromotionPolicy {
     }
 
     public boolean isValidDate() {
-        LocalDate currentDate = DateTimes.now().toLocalDate();  // `LocalDate.now()` 대체
+        LocalDate currentDate = DateTimeGenerator.getInstance().now();
         return !currentDate.isBefore(startDate) && !currentDate.isAfter(endDate);
     }
 

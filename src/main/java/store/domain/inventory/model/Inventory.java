@@ -35,9 +35,14 @@ public class Inventory {
     }
 
     public int getApplicableQuantity(CartItem cartItem, PromotionPolicy policy) {
-        if (policy == null) return 0;
+        if (policy == null) {
+            return 0;
+        }
         int totalQuantity = getPromotionStockCount(cartItem.name());
-        return policy.getApplicableQuantity(totalQuantity);
+        if (totalQuantity < cartItem.quantity()) {
+            return policy.getApplicableQuantity(totalQuantity);
+        }
+        return policy.getApplicableQuantity(cartItem.quantity());
     }
 
     public void addStock(Stock stock) {

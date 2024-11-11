@@ -30,10 +30,10 @@ public class OrderService {
         PromotionStrategy strategy = PromotionStrategySelector.select(cartItem, policy);
 
         if (isValidPromotion(policy, strategy) && isExtraQuantityPromotion(strategy)) {
-            return applyExtraPromotion(cartItem, price, policy, strategy);
+            return applyExtraPromotion(cartItem, price, policy,strategy);
         }
         if (isValidPromotion(policy, strategy) && isRegularPricePromotion(strategy)) {
-            return applyRegularPromotion(cartItem, price, policy, strategy);
+            return applyRegularPromotion(cartItem, price, policy,strategy);
         }
         if (policy != null && policy.isValidDate()) {
             checkSufficientQuantity(cartItem.name(), cartItem.quantity());
@@ -43,7 +43,9 @@ public class OrderService {
     }
 
     public Price calculateTotalCartPrice(List<OrderItem> orderItems) {
-        return orderItems.stream().map(inventoryService::getTotalPriceOfEachItem).reduce(Price.ZERO, Price::plus);
+        return orderItems.stream()
+                .map(inventoryService::getTotalPriceOfEachItem)
+                .reduce(Price.ZERO, Price::plus);
     }
 
     public PromotionPolicy getPromotionPolicy(CartItem cartItem) {
@@ -52,15 +54,19 @@ public class OrderService {
 
     private OrderItem applyExtraPromotion(CartItem cartItem, Price price, PromotionPolicy policy, PromotionStrategy strategy) {
         int promotionQuantity = policy.calculateExtraPromotionQuantity(cartItem);
-        if (promotionCallback.confirmExtraPromotion(cartItem)) {
-            strategy.apply(cartItem, policy);
+
+        if (!promotionCallback.confirmExtraPromotion(cartItem)) {
+            return createOrderItem(cartItem, price, promotionQuantity-1, policy);
         }
+        strategy.apply(cartItem, policy);
+
         return createOrderItem(cartItem, price, promotionQuantity, policy);
     }
 
     private OrderItem applyRegularPromotion(CartItem cartItem, Price price, PromotionPolicy policy, PromotionStrategy strategy) {
         int applicableQuantity = getApplicableQuantity(cartItem);
         int remainingQuantity = getRemainingQuantity(cartItem);
+
         if (!promotionCallback.confirmRegularPriceOption(cartItem, remainingQuantity)) {
             strategy.apply(cartItem, policy);
         }

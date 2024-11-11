@@ -37,15 +37,15 @@ public class InventoryService {
         });
     }
 
-    public int getApplicableQuantity(CartItem orderItem, PromotionPolicy policy) {
+    public int getApplicableQuantity(CartItem cartItem, PromotionPolicy policy) {
         if (policy == null) {
             return 0;
         }
-        int totalQuantity = getPromotionStockQuantity(orderItem.name());
-        if (totalQuantity < orderItem.quantity()) {
+        int totalQuantity = getPromotionStockQuantity(cartItem.name());
+        if (totalQuantity < cartItem.quantity()) {
             return policy.getApplicableQuantity(totalQuantity);
         }
-        return policy.getApplicableQuantity(orderItem.quantity());
+        return policy.getApplicableQuantity(cartItem.quantity());
     }
 
 
@@ -97,4 +97,5 @@ public class InventoryService {
                 .map(PromotionStock::getQuantity)
                 .orElse(0);
     }
+
 }
