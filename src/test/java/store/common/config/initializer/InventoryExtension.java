@@ -32,7 +32,8 @@ public class InventoryExtension implements BeforeEachCallback {
         PromotionPolicy promotionPolicy1 = new PromotionPolicy(2, 1, FIXED_DATE.minusDays(1), FIXED_DATE.plusDays(1));  // Example policy
         Promotion promotion1 = new Promotion("item1", promotionPolicy1);
         PromotionStock promotionStock1 = new PromotionStock(product1, 3, promotion1);  // 5 units for promotion stock
-        //ExtraPromotion 용
+
+        //ExtraQuantityPromotion 용
         PromotionPolicy promotionPolicy2 = new PromotionPolicy(2, 1, FIXED_DATE.minusDays(1), FIXED_DATE.plusDays(1));  // Example policy
         Promotion promotion2 = new Promotion("item2", promotionPolicy2);
         PromotionStock promotionStock2 = new PromotionStock(product2, 5, promotion2);  // 5 units for promotion stock
