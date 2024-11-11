@@ -1,7 +1,7 @@
 package store.common.constants;
 
 public class ReceiptConstants {
-    public static final String STORE_HEADER = "============ W 편의점 ============";
+    public static final String STORE_HEADER = "============== W 편의점 ===============";
     public static final String PRODUCT_INFO_HEADER_FORMAT = "%-15s%-10s%-10s";
     public static final String LINE_SEPARATOR = System.lineSeparator();
     public static final String DIVIDER = "====================================";
