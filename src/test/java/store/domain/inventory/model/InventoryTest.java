@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import store.domain.promotion.model.Promotion;
 import store.domain.promotion.model.PromotionPolicy;
+import store.extension.annotation.FixedDateTime;
 
 import java.time.LocalDate;
 
@@ -68,6 +69,7 @@ class InventoryTest {
     }
 
     @Test
+    @FixedDateTime
     void 프로모션_유효성() {
         assertTrue(promotion.isValid());
     }

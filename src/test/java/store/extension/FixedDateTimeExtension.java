@@ -10,6 +10,6 @@ public class FixedDateTimeExtension implements BeforeEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        DateTimeGenerator.getInstance().enableFixedClockMode(LocalDate.of(2024, 11, 6));
+        DateTimeGenerator.getInstance().enableFixedClockMode(LocalDate.of(2024, 11, 10));
     }
 }
