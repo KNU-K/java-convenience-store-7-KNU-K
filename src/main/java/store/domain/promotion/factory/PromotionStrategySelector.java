@@ -29,18 +29,19 @@ public class PromotionStrategySelector {
     }
 
     public static PromotionStrategy select(CartItem cartItem, PromotionPolicy policy) {
-        if (policy == null || !policy.isValidDate()) {
-            return null;
-        }
-        if (determineExtraQuantity(cartItem, policy)) {
+        if (validate(policy) && determineExtraQuantity(cartItem, policy)) {
             return promotionStrategyMap.get(PromotionStrategyType.EXTRA_QUANTITY);
         }
 
-        if (determineRegularPriceStrategy(cartItem, policy)) {
+        if (validate(policy) && determineRegularPriceStrategy(cartItem, policy)) {
             return promotionStrategyMap.get(PromotionStrategyType.REGULAR_PRICE_STRATEGY);
         }
 
         return null;
+    }
+
+    private static boolean validate(PromotionPolicy policy) {
+        return policy != null && policy.isValidDate();
     }
 
     private static boolean determineExtraQuantity(CartItem cartItem, PromotionPolicy policy) {
@@ -50,7 +51,9 @@ public class PromotionStrategySelector {
 
     private static boolean determineRegularPriceStrategy(CartItem cartItem, PromotionPolicy policy) {
         Inventory inventory = InventoryInitializer.getInstance().getInventory();
-        return policy.getApplicableQuantity(cartItem.quantity()) > inventory.getPromotionStockCount(cartItem.name());
+        int promotionQuantity = policy.getApplicableQuantity(cartItem.quantity());
+        int quantity = cartItem.quantity();
+        return promotionQuantity > inventory.getPromotionStockCount(cartItem.name()) || quantity - promotionQuantity > 0;
     }
 
     public static PromotionStrategy get(PromotionStrategyType promotionStrategyType) {
