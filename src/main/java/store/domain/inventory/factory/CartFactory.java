@@ -24,7 +24,9 @@ public class CartFactory {
         Cart cart = new Cart();
         String[] itemGroups = cleanAndSplitInput(input);
 
-        Arrays.stream(itemGroups).map(CartFactory::splitItemGroup).forEach(itemDataArray -> processItemData(itemDataArray, cart));
+        Arrays.stream(itemGroups)
+                .map(CartFactory::splitItemGroup)
+                .forEach(itemDataArray -> processItemData(itemDataArray, cart));
 
         return cart;
     }
@@ -47,7 +49,7 @@ public class CartFactory {
     }
 
     private static String[] splitItemGroup(String itemGroup) {
-        return itemGroup.split(ITEM_SEPARATOR);
+            return itemGroup.split(ITEM_SEPARATOR);
     }
 
     private static void processItemData(String[] itemDataArray, Cart cart) {
@@ -56,7 +58,6 @@ public class CartFactory {
 
     private static CartItem parseItemData(String itemData) {
         String[] itemDetails = itemData.split(DATA_SEPARATOR);
-
         validateExistProduct(itemDetails[0]);
         String itemName = itemDetails[0];
 
